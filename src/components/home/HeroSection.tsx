@@ -169,14 +169,12 @@ export default function HeroSection() {
             className="flex-1 max-w-lg lg:max-w-xl"
           >
             <div className="relative">
-              {/* Glow behind image */}
-              <div className="absolute -inset-8 bg-gradient-to-br from-ge-yellow/20 via-ge-blue-light/20 to-ge-orange/20 rounded-[3rem] blur-3xl" />
               <Image
                 src="/images/hero-illustration.png"
                 alt="Vietnamese students exploring career paths"
                 width={600}
                 height={400}
-                className="relative z-10 w-full h-auto drop-shadow-2xl"
+                className="relative z-10 w-full h-auto drop-shadow-2xl mix-blend-multiply"
                 priority
               />
             </div>
