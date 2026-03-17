@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAuthStore, getAllUserResults } from '@/store/authStore';
+import { exportResultsToCSV, downloadCSV } from '@/lib/googleSheet';
 
 export default function AuthPage() {
   const router = useRouter();
@@ -425,12 +426,27 @@ function AdminDashboard() {
               </h1>
               <p className="text-white/70">Xem toàn bộ dữ liệu và kết quả quiz</p>
             </div>
-            <button
-              onClick={logout}
-              className="px-5 py-2.5 rounded-full border-2 border-white/30 text-white font-semibold hover:bg-white/10 transition-all text-sm"
-            >
-              Đăng xuất
-            </button>
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  const flatResults = allData.flatMap((u) =>
+                    u.results.map((r) => ({ name: u.name, email: u.email, date: r.date, result: r.result }))
+                  );
+                  const csv = exportResultsToCSV(flatResults);
+                  downloadCSV(csv, `quiz-results-${new Date().toISOString().slice(0, 10)}.csv`);
+                }}
+                className="px-5 py-2.5 rounded-full bg-ge-yellow text-ge-navy font-semibold hover:bg-ge-yellow/80 transition-all text-sm flex items-center gap-2"
+              >
+                <FileText size={16} />
+                Xuất CSV
+              </button>
+              <button
+                onClick={logout}
+                className="px-5 py-2.5 rounded-full border-2 border-white/30 text-white font-semibold hover:bg-white/10 transition-all text-sm"
+              >
+                Đăng xuất
+              </button>
+            </div>
           </div>
         </motion.div>
 
