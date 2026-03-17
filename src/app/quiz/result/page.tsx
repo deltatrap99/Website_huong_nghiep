@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
@@ -50,7 +50,20 @@ export default function ResultPage() {
 
   const { archetype, riasecScores, mbtiLite, competencyProfile } = result;
 
-  const handleShare = async () => {
+  const handleShareFacebook = () => {
+    analytics.resultShared('facebook');
+    const shareUrl = encodeURIComponent(window.location.origin);
+    const shareText = encodeURIComponent(
+      `🎓 Kết quả hướng nghiệp của tôi: "${archetype.nameVi}" (${archetype.name})!\n\nMBTI: ${mbtiLite} | RIASEC: ${result.riasecPrimary}${result.riasecSecondary}\n\nBạn là kiểu gì? Làm quiz miễn phí tại:`
+    );
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}&quote=${shareText}`,
+      '_blank',
+      'width=600,height=400'
+    );
+  };
+
+  const handleShareNative = async () => {
     analytics.resultShared('native');
     if (navigator.share) {
       await navigator.share({
@@ -60,6 +73,26 @@ export default function ResultPage() {
       });
     }
   };
+
+  const profileCardRef = useRef<HTMLDivElement>(null);
+
+  const handleDownload = useCallback(async () => {
+    if (!profileCardRef.current) return;
+    try {
+      const html2canvas = (await import('html2canvas-pro')).default;
+      const canvas = await html2canvas(profileCardRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: null,
+      });
+      const link = document.createElement('a');
+      link.download = `ket-qua-huong-nghiep-${archetype.code}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } catch (err) {
+      console.error('Failed to capture image:', err);
+    }
+  }, [archetype.code]);
 
   const handleNewQuiz = () => {
     reset();
@@ -75,6 +108,7 @@ export default function ResultPage() {
           transition={{ duration: 0.6 }}
           className="rounded-3xl overflow-hidden shadow-card-xl mb-8"
           style={{ background: archetype.gradient }}
+          ref={profileCardRef}
         >
           <div className="p-8 md:p-12 text-white">
             <div className="flex items-center gap-3 mb-2">
@@ -95,14 +129,24 @@ export default function ResultPage() {
             </p>
 
             {/* Share buttons */}
-            <div className="flex gap-3 mt-8">
+            <div className="flex flex-wrap gap-3 mt-8">
               <button
-                onClick={handleShare}
+                onClick={handleShareFacebook}
+                className="flex items-center gap-2 bg-[#1877F2] hover:bg-[#1565d8] text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-colors shadow-md"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                Facebook
+              </button>
+              <button
+                onClick={handleShareNative}
                 className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-colors"
               >
                 <Share2 size={16} /> Chia sẻ
               </button>
-              <button className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-colors">
+              <button
+                onClick={handleDownload}
+                className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-colors"
+              >
                 <Download size={16} /> Lưu ảnh
               </button>
             </div>
