@@ -21,6 +21,7 @@ import { useQuizStore } from '@/store/quizStore';
 import { useAuthStore } from '@/store/authStore';
 import { analytics } from '@/lib/analytics';
 import { sendToGoogleSheet } from '@/lib/googleSheet';
+import { saveQuizResult } from '@/lib/database';
 import RIASECChart from '@/components/result/RIASECChart';
 
 const fadeInUp = {
@@ -39,9 +40,11 @@ export default function ResultPage() {
       return;
     }
     analytics.resultViewed(result.archetype.name);
-    // Auto-save result if logged in
+    // Auto-save result if logged in (localStorage)
     useAuthStore.getState().saveResult(result);
-    // Auto-send to Google Sheet
+    // Save to Supabase database
+    saveQuizResult(result);
+    // Send to Google Sheet
     sendToGoogleSheet(result);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result, router]);

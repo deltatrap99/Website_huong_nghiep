@@ -22,8 +22,9 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useAuthStore, getAllUserResults } from '@/store/authStore';
+import { useAuthStore } from '@/store/authStore';
 import { exportResultsToCSV, downloadCSV } from '@/lib/googleSheet';
+import { getAllQuizResults, QuizResultRow } from '@/lib/database';
 
 export default function AuthPage() {
   const router = useRouter();
@@ -388,23 +389,33 @@ export default function AuthPage() {
 
 // Admin Dashboard Component
 function AdminDashboard() {
-  const { logout, user } = useAuthStore();
-  const [allData, setAllData] = useState<ReturnType<typeof getAllUserResults>>([]);
+  const { logout } = useAuthStore();
+  const [dbResults, setDbResults] = useState<QuizResultRow[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setAllData(getAllUserResults());
+    const fetchData = async () => {
+      setLoading(true);
+      const data = await getAllQuizResults();
+      setDbResults(data);
+      setLoading(false);
+    };
+    fetchData();
   }, []);
 
-  const totalResults = allData.reduce((sum, u) => sum + u.results.length, 0);
+  const totalResults = dbResults.length;
 
   // Count archetypes
   const archetypeCount: Record<string, number> = {};
-  allData.forEach((u) =>
-    u.results.forEach((r) => {
-      const name = r.result.archetype.nameVi;
-      archetypeCount[name] = (archetypeCount[name] || 0) + 1;
-    })
-  );
+  dbResults.forEach((r) => {
+    archetypeCount[r.archetype_name_vi] = (archetypeCount[r.archetype_name_vi] || 0) + 1;
+  });
+
+  // Recent (last 7 days)
+  const week = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const recentCount = dbResults.filter(
+    (r) => r.created_at && new Date(r.created_at).getTime() > week
+  ).length;
 
   return (
     <div className="min-h-screen bg-ge-gray-50 pt-24 pb-16">
@@ -429,11 +440,26 @@ function AdminDashboard() {
             <div className="flex gap-3">
               <button
                 onClick={() => {
-                  const flatResults = allData.flatMap((u) =>
-                    u.results.map((r) => ({ name: u.name, email: u.email, date: r.date, result: r.result }))
-                  );
-                  const csv = exportResultsToCSV(flatResults);
-                  downloadCSV(csv, `quiz-results-${new Date().toISOString().slice(0, 10)}.csv`);
+                  const csvHeaders = ['Thời gian', 'MBTI', 'RIASEC Primary', 'RIASEC Secondary', 'Archetype (VI)', 'Archetype (EN)', 'R', 'I', 'A', 'S', 'E', 'C', 'English', 'Self Study', 'Soft Skill', 'Lead Score', 'Ngành nghề'];
+                  const csvRows = dbResults.map((r) => [
+                    r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : '',
+                    r.mbti_lite, r.riasec_primary, r.riasec_secondary,
+                    r.archetype_name_vi, r.archetype_name_en,
+                    r.r_score, r.i_score, r.a_score, r.s_score, r.e_score, r.c_score,
+                    r.english_score, r.self_study_score, r.soft_skill_score,
+                    r.lead_score, r.careers
+                  ].map((cell) => {
+                    const str = String(cell);
+                    return str.includes(',') || str.includes('"') ? `"${str.replace(/"/g, '""')}"` : str;
+                  }).join(','));
+                  const csv = '\uFEFF' + [csvHeaders.join(','), ...csvRows].join('\n');
+                  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                  const url = URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.href = url;
+                  link.download = `quiz-results-${new Date().toISOString().slice(0, 10)}.csv`;
+                  link.click();
+                  URL.revokeObjectURL(url);
                 }}
                 className="px-5 py-2.5 rounded-full bg-ge-yellow text-ge-navy font-semibold hover:bg-ge-yellow/80 transition-all text-sm flex items-center gap-2"
               >
@@ -458,10 +484,10 @@ function AdminDashboard() {
           className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
         >
           {[
-            { icon: Users, label: 'Tài khoản', value: allData.length, color: 'text-ge-blue' },
-            { icon: FileText, label: 'Lượt quiz', value: totalResults, color: 'text-ge-green' },
+            { icon: Users, label: 'Lượt quiz', value: totalResults, color: 'text-ge-blue' },
+            { icon: FileText, label: '7 ngày gần', value: recentCount, color: 'text-ge-green' },
             { icon: TrendingUp, label: 'Loại hình', value: Object.keys(archetypeCount).length, color: 'text-ge-orange' },
-            { icon: BarChart3, label: 'TB quiz/người', value: allData.length ? (totalResults / allData.length).toFixed(1) : '0', color: 'text-ge-coral' },
+            { icon: BarChart3, label: 'Dữ liệu', value: loading ? '...' : 'Supabase', color: 'text-ge-coral' },
           ].map((stat) => (
             <div key={stat.label} className="bg-white rounded-2xl shadow-card p-5 text-center">
               <stat.icon size={24} className={`${stat.color} mx-auto mb-2`} />
@@ -511,48 +537,58 @@ function AdminDashboard() {
           className="bg-white rounded-3xl shadow-card p-6 md:p-8"
         >
           <h2 className="font-heading font-bold text-lg text-ge-gray-900 mb-4">
-            👥 Danh sách người dùng
+            📋 Kết quả quiz ({totalResults})
           </h2>
-          {allData.length === 0 ? (
-            <p className="text-ge-gray-500 text-sm py-4 text-center">Chưa có người dùng nào đăng ký.</p>
+          {loading ? (
+            <div className="text-center py-8">
+              <div className="animate-spin w-8 h-8 border-3 border-ge-blue border-t-transparent rounded-full mx-auto mb-3" />
+              <p className="text-ge-gray-500 text-sm">Đang tải dữ liệu từ Supabase...</p>
+            </div>
+          ) : dbResults.length === 0 ? (
+            <p className="text-ge-gray-500 text-sm py-4 text-center">Chưa có kết quả nào.</p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b-2 border-ge-gray-100">
-                    <th className="px-3 py-3 text-left font-semibold text-ge-gray-500 text-xs uppercase tracking-wider">Họ tên</th>
-                    <th className="px-3 py-3 text-left font-semibold text-ge-gray-500 text-xs uppercase tracking-wider">Email</th>
-                    <th className="px-3 py-3 text-center font-semibold text-ge-gray-500 text-xs uppercase tracking-wider">Số lần quiz</th>
-                    <th className="px-3 py-3 text-left font-semibold text-ge-gray-500 text-xs uppercase tracking-wider">Kết quả gần nhất</th>
+                    <th className="px-3 py-3 text-left font-semibold text-ge-gray-500 text-xs uppercase tracking-wider">Thời gian</th>
+                    <th className="px-3 py-3 text-left font-semibold text-ge-gray-500 text-xs uppercase tracking-wider">MBTI</th>
+                    <th className="px-3 py-3 text-left font-semibold text-ge-gray-500 text-xs uppercase tracking-wider">RIASEC</th>
+                    <th className="px-3 py-3 text-left font-semibold text-ge-gray-500 text-xs uppercase tracking-wider">Kết quả</th>
+                    <th className="px-3 py-3 text-center font-semibold text-ge-gray-500 text-xs uppercase tracking-wider">Lead</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-ge-gray-100">
-                  {allData.map((u) => {
-                    const latest = u.results[0];
-                    return (
-                      <tr key={u.email} className="hover:bg-ge-gray-50 transition-colors">
-                        <td className="px-3 py-3 font-medium text-ge-gray-900">{u.name}</td>
-                        <td className="px-3 py-3 text-ge-gray-600">{u.email}</td>
-                        <td className="px-3 py-3 text-center">
-                          <span className="bg-ge-blue/10 text-ge-blue px-2 py-0.5 rounded-full text-xs font-bold">
-                            {u.results.length}
-                          </span>
-                        </td>
-                        <td className="px-3 py-3">
-                          {latest ? (
-                            <span className="text-ge-gray-700">
-                              {latest.result.archetype.nameVi}
-                              <span className="text-ge-gray-400 ml-1 text-xs">
-                                ({new Date(latest.date).toLocaleDateString('vi-VN')})
-                              </span>
-                            </span>
-                          ) : (
-                            <span className="text-ge-gray-400">—</span>
-                          )}
-                        </td>
-                      </tr>
-                    );
-                  })}
+                  {dbResults.map((r) => (
+                    <tr key={r.id} className="hover:bg-ge-gray-50 transition-colors">
+                      <td className="px-3 py-3 text-ge-gray-600 whitespace-nowrap">
+                        {r.created_at ? new Date(r.created_at).toLocaleString('vi-VN', {
+                          day: '2-digit', month: '2-digit', year: '2-digit',
+                          hour: '2-digit', minute: '2-digit'
+                        }) : '—'}
+                      </td>
+                      <td className="px-3 py-3">
+                        <span className="bg-ge-blue/10 text-ge-blue px-2 py-0.5 rounded-full text-xs font-bold">
+                          {r.mbti_lite}
+                        </span>
+                      </td>
+                      <td className="px-3 py-3">
+                        <span className="bg-ge-orange/10 text-ge-orange px-2 py-0.5 rounded-full text-xs font-bold">
+                          {r.riasec_primary}{r.riasec_secondary}
+                        </span>
+                      </td>
+                      <td className="px-3 py-3 font-medium text-ge-gray-900">{r.archetype_name_vi}</td>
+                      <td className="px-3 py-3 text-center">
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
+                          r.lead_score >= 8 ? 'bg-green-100 text-green-700' :
+                          r.lead_score >= 5 ? 'bg-yellow-100 text-yellow-700' :
+                          'bg-ge-gray-100 text-ge-gray-500'
+                        }`}>
+                          {r.lead_score}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
