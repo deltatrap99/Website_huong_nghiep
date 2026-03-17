@@ -18,8 +18,8 @@ interface AuthState {
 }
 
 // Simple client-side auth with localStorage (demo purposes)
-const ADMIN_EMAIL = 'admin@galaxy.edu.vn';
-const ADMIN_PASSWORD = 'admin123';
+const ADMIN_EMAIL = 'tuanbq@hocmai.vn';
+const ADMIN_PASSWORD = 'Quoctuan6699@';
 
 const getAccounts = (): Record<string, { name: string; password: string }> => {
   if (typeof window === 'undefined') return {};
