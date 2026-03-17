@@ -54,16 +54,40 @@ export async function sendToGoogleSheet(
   };
 
   try {
-    await fetch(SHEET_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+    // Use hidden form + iframe to reliably POST to Google Apps Script
+    // This bypasses CORS issues that plague fetch() with Apps Script redirects
+    return new Promise((resolve) => {
+      const iframe = document.createElement('iframe');
+      iframe.name = 'ge-sheet-frame';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = SHEET_URL;
+      form.target = 'ge-sheet-frame';
+
+      // Add payload as hidden field
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'payload';
+      input.value = JSON.stringify(payload);
+      form.appendChild(input);
+
+      document.body.appendChild(form);
+      form.submit();
+
+      // Clean up after a short delay
+      setTimeout(() => {
+        document.body.removeChild(form);
+        document.body.removeChild(iframe);
+      }, 5000);
+
+      console.log('[GoogleSheet] Data sent successfully via form POST');
+      resolve(true);
     });
-    console.log('[GoogleSheet] Data sent successfully');
-    return true;
-  } catch (err) {
-    console.error('[GoogleSheet] Failed to send:', err);
+  } catch {
+    console.error('[GoogleSheet] Failed to send');
     return false;
   }
 }

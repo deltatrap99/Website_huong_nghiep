@@ -14,7 +14,19 @@
 function doPost(e) {
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    var data = JSON.parse(e.postData.contents);
+    
+    // Parse data - handle both JSON and form data
+    var data;
+    try {
+      data = JSON.parse(e.postData.contents);
+    } catch(err) {
+      // Try parsing as form data with payload field
+      try {
+        data = JSON.parse(e.parameter.payload);
+      } catch(err2) {
+        data = e.parameter;
+      }
+    }
     
     // Tạo header nếu sheet trống
     if (sheet.getLastRow() === 0) {
@@ -59,21 +71,22 @@ function doPost(e) {
       data.archetypeCode || '',
       data.archetypeNameVi || '',
       data.archetypeNameEn || '',
-      data.scores?.R || 0,
-      data.scores?.I || 0,
-      data.scores?.A || 0,
-      data.scores?.S || 0,
-      data.scores?.E || 0,
-      data.scores?.C || 0,
-      data.competency?.english || 0,
-      data.competency?.self_study || 0,
-      data.competency?.soft_skill || 0,
+      data.scores ? (data.scores.R || 0) : 0,
+      data.scores ? (data.scores.I || 0) : 0,
+      data.scores ? (data.scores.A || 0) : 0,
+      data.scores ? (data.scores.S || 0) : 0,
+      data.scores ? (data.scores.E || 0) : 0,
+      data.scores ? (data.scores.C || 0) : 0,
+      data.competency ? (data.competency.english || 0) : 0,
+      data.competency ? (data.competency.self_study || 0) : 0,
+      data.competency ? (data.competency.soft_skill || 0) : 0,
       data.leadScore || 0,
       data.careers || '',
       data.strengths || '',
       data.improvements || ''
     ]);
     
+    // Return JSON with CORS headers
     return ContentService
       .createTextOutput(JSON.stringify({ status: 'success' }))
       .setMimeType(ContentService.MimeType.JSON);
@@ -85,7 +98,7 @@ function doPost(e) {
   }
 }
 
-// Test function
+// Handle GET requests (for testing)
 function doGet(e) {
   return ContentService
     .createTextOutput(JSON.stringify({ status: 'ok', message: 'Galaxy Education Quiz Webhook is running!' }))
