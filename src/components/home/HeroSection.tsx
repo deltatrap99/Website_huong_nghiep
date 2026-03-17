@@ -174,7 +174,7 @@ export default function HeroSection() {
                 alt="Vietnamese students exploring career paths"
                 width={600}
                 height={400}
-                className="relative z-10 w-full h-auto drop-shadow-2xl mix-blend-multiply"
+                className="relative z-10 w-full h-auto drop-shadow-2xl rounded-2xl"
                 priority
               />
             </div>
