@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* === PRIMARY COLORS === */
+  --color-ge-navy: #1A2B5F;
+  --color-ge-blue: #2B6CB0;
+  --color-ge-blue-light: #3B82F6;
+  
+  /* === ACCENT COLORS === */
+  --color-ge-orange: #F97316;
+  --color-ge-yellow: #FBBF24;
+  --color-ge-green: #22C55E;
+  --color-ge-coral: #F87171;
+  
+  /* === NEUTRAL SYSTEM === */
+  --color-ge-gray-50: #F8FAFC;
+  --color-ge-gray-100: #F1F5F9;
+  --color-ge-gray-200: #E2E8F0;
+  --color-ge-gray-400: #94A3B8;
+  --color-ge-gray-600: #475569;
+  --color-ge-gray-800: #1E293B;
+  --color-ge-gray-900: #0F172A;
+  
+  /* === QUIZ ARCHETYPE COLORS (RIASEC) === */
+  --color-archetype-realistic: #0EA5E9;
+  --color-archetype-investigative: #8B5CF6;
+  --color-archetype-artistic: #EC4899;
+  --color-archetype-social: #22C55E;
+  --color-archetype-enterprising: #F97316;
+  --color-archetype-conventional: #6366F1;
+  
+  /* === FONT FAMILIES === */
+  --font-heading: 'Be Vietnam Pro', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  
+  /* === BORDER RADIUS === */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  
+  /* === SHADOWS === */
+  --shadow-card: 0 4px 6px -1px rgba(26, 43, 95, 0.07), 0 2px 4px -2px rgba(26, 43, 95, 0.05);
+  --shadow-card-lg: 0 10px 15px -3px rgba(26, 43, 95, 0.08), 0 4px 6px -4px rgba(26, 43, 95, 0.04);
+  --shadow-card-xl: 0 20px 25px -5px rgba(26, 43, 95, 0.10), 0 8px 10px -6px rgba(26, 43, 95, 0.05);
+  --shadow-card-hover: 0 20px 40px -12px rgba(26, 43, 95, 0.15);
+  
+  /* === ANIMATIONS === */
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.5s ease-out;
+  --animate-slide-in-right: slide-in-right 0.3s ease-out;
+  --animate-slide-in-left: slide-in-left 0.3s ease-out;
+  --animate-pulse-soft: pulse-soft 2s ease-in-out infinite;
+  --animate-counter: counter 1s ease-out;
+  --animate-bounce-soft: bounce-soft 0.6s ease-out;
+  
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-in-right {
+    from { opacity: 0; transform: translateX(300px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slide-in-left {
+    from { opacity: 0; transform: translateX(-300px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+  @keyframes counter {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes bounce-soft {
+    0% { transform: scale(0.95); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+}
+
+/* === BASE STYLES === */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ge-gray-800);
+  background-color: #FFFFFF;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  color: var(--color-ge-gray-900);
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ge-gray-100);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ge-gray-400);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ge-gray-600);
+}
+
+/* === SELECTION === */
+::selection {
+  background: rgba(43, 108, 176, 0.2);
+  color: var(--color-ge-navy);
+}
+
+/* === GRADIENT UTILITIES === */
+.gradient-hero {
+  background: linear-gradient(135deg, #1A2B5F 0%, #2B6CB0 50%, #3B82F6 100%);
+}
+
+.gradient-cta {
+  background: linear-gradient(135deg, #F97316 0%, #FBBF24 100%);
+}
+
+.gradient-quiz-bg {
+  background: linear-gradient(135deg, #EFF6FF 0%, #F0F9FF 50%, #ECFDF5 100%);
+}
+
+.gradient-card {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+}
+
+/* === SKELETON LOADING === */
+.skeleton {
+  background: linear-gradient(90deg, var(--color-ge-gray-100) 25%, var(--color-ge-gray-200) 50%, var(--color-ge-gray-100) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

@@ -1,0 +1,493 @@
+import { QuizQuestion } from '@/types/quiz';
+
+export const questions: QuizQuestion[] = [
+  // === PHẦN 1: MBTI-Lite Personality (Q1-Q30) ===
+  { id: 1, layer: 'hook', text: 'Cuối tuần, bạn thích dành thời gian như thế nào?',
+    subtitle: 'Chọn phương án gần nhất với bạn', type: 'single', options: [
+      { id: '1A', text: 'Đi chơi với bạn bè, tham gia hoạt động nhóm', emoji: '🎉', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+      { id: '1B', text: 'Ở nhà đọc sách, xem phim một mình', emoji: '📚', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+      { id: '1C', text: 'Vừa gặp bạn bè, vừa có thời gian riêng', emoji: '☕', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+    ] },
+  { id: 2, layer: 'hook', text: 'Khi phải quyết định việc quan trọng, bạn thường:', type: 'single', options: [
+      { id: '2A', text: 'Phân tích ưu nhược điểm, lập bảng so sánh', emoji: '🧠', scores: { mbti: { dimension: 'TF', value: 'T' } } },
+      { id: '2B', text: 'Tin vào cảm nhận và trực giác', emoji: '💫', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+      { id: '2C', text: 'Hỏi ý kiến người thân rồi mới quyết', emoji: '🤝', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+    ] },
+  { id: 3, layer: 'hook', text: 'Bạn thích kiểu làm việc nào hơn?', type: 'single', options: [
+      { id: '3A', text: 'Lên kế hoạch chi tiết, làm theo từng bước', emoji: '📋', scores: { mbti: { dimension: 'JP', value: 'J' } } },
+      { id: '3B', text: 'Linh hoạt, ứng biến theo tình huống', emoji: '🎯', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+      { id: '3C', text: 'Có kế hoạch lớn nhưng sáng tạo trong chi tiết', emoji: '✨', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+    ] },
+  { id: 4, layer: 'hook', text: 'Trong một buổi tiệc lớn, bạn thường:', type: 'single', options: [
+      { id: '4A', text: 'Chủ động làm quen với nhiều người mới', emoji: '🤗', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+      { id: '4B', text: 'Chỉ nói chuyện với vài người thân quen', emoji: '😊', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+      { id: '4C', text: 'Quan sát trước rồi mới tham gia', emoji: '👀', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+    ] },
+  { id: 5, layer: 'hook', text: 'Khi bạn thân kể chuyện buồn, bạn thường:', type: 'single', options: [
+      { id: '5A', text: 'Phân tích vấn đề và đưa ra giải pháp cụ thể', emoji: '💡', scores: { mbti: { dimension: 'TF', value: 'T' } } },
+      { id: '5B', text: 'Lắng nghe, đồng cảm và chia sẻ cảm xúc', emoji: '💖', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+      { id: '5C', text: 'Vừa an ủi vừa gợi ý cách giải quyết', emoji: '🫂', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+    ] },
+  { id: 6, layer: 'hook', text: 'Khi đi du lịch, bạn thích:', type: 'single', options: [
+      { id: '6A', text: 'Lên lịch trình chi tiết từng ngày', emoji: '📅', scores: { mbti: { dimension: 'JP', value: 'J' } } },
+      { id: '6B', text: 'Đi tự do, khám phá ngẫu hứng', emoji: '🗺️', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+      { id: '6C', text: 'Có plan chung nhưng linh hoạt thay đổi', emoji: '🧳', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+    ] },
+  { id: 7, layer: 'hook', text: 'Bạn học tập hiệu quả nhất khi:', type: 'single', options: [
+      { id: '7A', text: 'Học nhóm, thảo luận với bạn bè', emoji: '👥', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+      { id: '7B', text: 'Tự học một mình trong không gian yên tĩnh', emoji: '🔇', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+      { id: '7C', text: 'Xen kẽ cả hai hình thức', emoji: '🔄', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+    ] },
+  { id: 8, layer: 'hook', text: 'Khi xem một bộ phim, bạn chú ý đến:', type: 'single', options: [
+      { id: '8A', text: 'Cốt truyện logic, chi tiết kỹ thuật', emoji: '🎬', scores: { mbti: { dimension: 'TF', value: 'T' } } },
+      { id: '8B', text: 'Cảm xúc nhân vật, thông điệp ý nghĩa', emoji: '🎭', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+      { id: '8C', text: 'Cả hai, tùy thể loại phim', emoji: '🍿', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+    ] },
+  { id: 9, layer: 'hook', text: 'Phòng học/phòng ngủ của bạn thường:', type: 'single', options: [
+      { id: '9A', text: 'Ngăn nắp, mọi thứ đúng vị trí', emoji: '🧹', scores: { mbti: { dimension: 'JP', value: 'J' } } },
+      { id: '9B', text: 'Hơi bừa bộn nhưng bạn biết đồ ở đâu', emoji: '🎨', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+      { id: '9C', text: 'Dọn dẹp theo đợt, khi nào cần thì dọn', emoji: '🔃', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+    ] },
+  { id: 10, layer: 'hook', text: 'Khi gặp stress, bạn thường:', type: 'single', options: [
+      { id: '10A', text: 'Tâm sự với bạn bè hoặc người thân', emoji: '📱', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+      { id: '10B', text: 'Muốn ở một mình để suy nghĩ', emoji: '🧘', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+      { id: '10C', text: 'Viết nhật ký hoặc nghe nhạc', emoji: '🎵', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+    ] },
+  { id: 11, layer: 'hook', text: 'Bạn đánh giá một người qua:', type: 'single', options: [
+      { id: '11A', text: 'Năng lực và thành tích của họ', emoji: '📊', scores: { mbti: { dimension: 'TF', value: 'T' } } },
+      { id: '11B', text: 'Tính cách và cách đối xử với mọi người', emoji: '💝', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+      { id: '11C', text: 'Cả phẩm chất lẫn năng lực', emoji: '⚖️', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+    ] },
+  { id: 12, layer: 'hook', text: 'Khi làm bài tập nhóm, bạn thường:', type: 'single', options: [
+      { id: '12A', text: 'Phân chia công việc rõ ràng, đặt deadline', emoji: '📌', scores: { mbti: { dimension: 'JP', value: 'J' } } },
+      { id: '12B', text: 'Để mọi người tự do chọn phần mình thích', emoji: '🎲', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+      { id: '12C', text: 'Linh hoạt điều chỉnh theo tiến độ', emoji: '⚙️', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+    ] },
+  { id: 13, layer: 'hook', text: 'Bạn thích loại hoạt động ngoại khóa nào?', type: 'single', options: [
+      { id: '13A', text: 'Hoạt động đông người: tình nguyện, sự kiện', emoji: '🌟', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+      { id: '13B', text: 'Hoạt động cá nhân: viết blog, vẽ, code', emoji: '💻', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+      { id: '13C', text: 'Nhóm nhỏ: câu lạc bộ sở thích', emoji: '🎯', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+    ] },
+  { id: 14, layer: 'hook', text: 'Khi tranh luận, bạn thường:', type: 'single', options: [
+      { id: '14A', text: 'Dùng dữ liệu, bằng chứng để thuyết phục', emoji: '📈', scores: { mbti: { dimension: 'TF', value: 'T' } } },
+      { id: '14B', text: 'Quan tâm đến cảm xúc mọi người, tránh xung đột', emoji: '🕊️', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+      { id: '14C', text: 'Tìm điểm chung để hòa giải', emoji: '🤝', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+    ] },
+  { id: 15, layer: 'hook', text: 'Bạn cảm thấy thoải mái hơn khi:', type: 'single', options: [
+      { id: '15A', text: 'Mọi thứ được quyết định từ trước', emoji: '✅', scores: { mbti: { dimension: 'JP', value: 'J' } } },
+      { id: '15B', text: 'Giữ nhiều lựa chọn mở', emoji: '🔓', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+      { id: '15C', text: 'Có hướng đi nhưng không bị ràng buộc', emoji: '🌊', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+    ] },
+  { id: 16, layer: 'hook', text: 'Trong lớp học, bạn thường:', type: 'single', options: [
+      { id: '16A', text: 'Hay phát biểu, tham gia thảo luận sôi nổi', emoji: '🙋', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+      { id: '16B', text: 'Ghi chép cẩn thận, ít phát biểu trước lớp', emoji: '📝', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+      { id: '16C', text: 'Phát biểu khi thật sự có ý kiến quan trọng', emoji: '💭', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+    ] },
+  { id: 17, layer: 'hook', text: 'Khi chọn quà sinh nhật cho bạn, bạn thường:', type: 'single', options: [
+      { id: '17A', text: 'Chọn món thực tế, hữu ích mà bạn cần', emoji: '🎁', scores: { mbti: { dimension: 'TF', value: 'T' } } },
+      { id: '17B', text: 'Chọn món mang ý nghĩa đặc biệt, tình cảm', emoji: '💌', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+      { id: '17C', text: 'Hỏi thẳng bạn muốn gì', emoji: '❓', scores: { mbti: { dimension: 'TF', value: 'T' } } },
+    ] },
+  { id: 18, layer: 'hook', text: 'Bạn quản lý thời gian như thế nào?', type: 'single', options: [
+      { id: '18A', text: 'Dùng lịch, to-do list, nhắc nhở', emoji: '⏰', scores: { mbti: { dimension: 'JP', value: 'J' } } },
+      { id: '18B', text: 'Làm theo cảm hứng, deadline gần mới tập trung', emoji: '🔥', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+      { id: '18C', text: 'Có plan tổng quan nhưng hay thay đổi', emoji: '📱', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+    ] },
+  { id: 19, layer: 'hook', text: 'Bạn nạp lại năng lượng bằng cách nào?', type: 'single', options: [
+      { id: '19A', text: 'Gặp gỡ bạn bè, đi cafe, karaoke', emoji: '🎤', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+      { id: '19B', text: 'Ở nhà một mình, đọc/chơi game/xem phim', emoji: '🏠', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+      { id: '19C', text: 'Đi dạo một mình hoặc với 1-2 người thân', emoji: '🚶', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+    ] },
+  { id: 20, layer: 'hook', text: 'Điều gì khiến bạn khó chịu nhất?', type: 'single', options: [
+      { id: '20A', text: 'Quyết định thiếu logic, không có căn cứ', emoji: '😤', scores: { mbti: { dimension: 'TF', value: 'T' } } },
+      { id: '20B', text: 'Người khác bị đối xử không công bằng', emoji: '😢', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+      { id: '20C', text: 'Sự giả tạo và thiếu chân thành', emoji: '😠', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+    ] },
+  { id: 21, layer: 'hook', text: 'Khi bắt đầu một dự án mới, bạn:', type: 'single', options: [
+      { id: '21A', text: 'Nghiên cứu kỹ, lập kế hoạch rồi mới làm', emoji: '🔍', scores: { mbti: { dimension: 'JP', value: 'J' } } },
+      { id: '21B', text: 'Bắt tay vào làm ngay, vừa làm vừa học', emoji: '🚀', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+      { id: '21C', text: 'Brainstorm nhiều ý tưởng trước rồi chọn', emoji: '💡', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+    ] },
+  { id: 22, layer: 'hook', text: 'Email/tin nhắn bạn viết thường:', type: 'single', options: [
+      { id: '22A', text: 'Dài, chi tiết, thân thiện, nhiều emoji', emoji: '😄', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+      { id: '22B', text: 'Ngắn gọn, đi thẳng vào vấn đề', emoji: '📨', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+      { id: '22C', text: 'Tùy người nhận mà điều chỉnh', emoji: '💬', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+    ] },
+  { id: 23, layer: 'hook', text: 'Bạn ngưỡng mộ người nào hơn?', type: 'single', options: [
+      { id: '23A', text: 'Nhà khoa học/doanh nhân thành đạt', emoji: '🏆', scores: { mbti: { dimension: 'TF', value: 'T' } } },
+      { id: '23B', text: 'Người có trái tim nhân hậu, hay giúp đỡ', emoji: '❤️', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+      { id: '23C', text: 'Người vừa giỏi vừa tốt bụng', emoji: '⭐', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+    ] },
+  { id: 24, layer: 'hook', text: 'Khi mua đồ, bạn thường:', type: 'single', options: [
+      { id: '24A', text: 'So sánh giá, đọc review trước khi mua', emoji: '🔎', scores: { mbti: { dimension: 'JP', value: 'J' } } },
+      { id: '24B', text: 'Thấy thích là mua ngay, tin vào cảm nhận', emoji: '🛒', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+      { id: '24C', text: 'Lập danh sách nhưng hay mua thêm ngoài list', emoji: '📝', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+    ] },
+  { id: 25, layer: 'hook', text: 'Bạn thể hiện tình cảm bằng cách nào?', type: 'single', options: [
+      { id: '25A', text: 'Nói thẳng, thể hiện rõ ràng bằng lời', emoji: '💬', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+      { id: '25B', text: 'Hành động thầm lặng, ít nói nhưng quan tâm', emoji: '🌹', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+      { id: '25C', text: 'Viết thư, nhắn tin bày tỏ', emoji: '✍️', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+    ] },
+  { id: 26, layer: 'hook', text: 'Trong một cuộc tranh cãi, bạn ưu tiên:', type: 'single', options: [
+      { id: '26A', text: 'Tìm ra ai đúng ai sai, sự thật là gì', emoji: '⚖️', scores: { mbti: { dimension: 'TF', value: 'T' } } },
+      { id: '26B', text: 'Giữ hòa khí, không ai bị tổn thương', emoji: '🕊️', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+      { id: '26C', text: 'Hiểu quan điểm của cả hai bên', emoji: '🤲', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+    ] },
+  { id: 27, layer: 'hook', text: 'Bạn thích ngày nào hơn trong tuần?', type: 'single', options: [
+      { id: '27A', text: 'Thứ 2 - khởi đầu mới, có kế hoạch rõ ràng', emoji: '📋', scores: { mbti: { dimension: 'JP', value: 'J' } } },
+      { id: '27B', text: 'Thứ 6 - tự do, không bị ràng buộc', emoji: '🎊', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+      { id: '27C', text: 'Không quan trọng ngày nào, miễn là vui', emoji: '😊', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+    ] },
+  { id: 28, layer: 'hook', text: 'Khi phải thuyết trình, bạn cảm thấy:', type: 'single', options: [
+      { id: '28A', text: 'Hào hứng, thích được thể hiện trước đám đông', emoji: '🎤', scores: { mbti: { dimension: 'EI', value: 'E' } } },
+      { id: '28B', text: 'Lo lắng, muốn chuẩn bị thật kỹ', emoji: '😰', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+      { id: '28C', text: 'Ổn nếu chủ đề mình giỏi', emoji: '🤔', scores: { mbti: { dimension: 'EI', value: 'I' } } },
+    ] },
+  { id: 29, layer: 'hook', text: 'Bạn đọc loại sách nào nhiều hơn?', type: 'single', options: [
+      { id: '29A', text: 'Sách khoa học, kỹ thuật, kinh tế', emoji: '📊', scores: { mbti: { dimension: 'TF', value: 'T' } } },
+      { id: '29B', text: 'Sách văn học, tâm lý, truyện', emoji: '📖', scores: { mbti: { dimension: 'TF', value: 'F' } } },
+      { id: '29C', text: 'Sách phát triển bản thân', emoji: '🌱', scores: { mbti: { dimension: 'TF', value: 'T' } } },
+    ] },
+  { id: 30, layer: 'hook', text: 'Deadline gần kề, bạn thường:', type: 'single', options: [
+      { id: '30A', text: 'Đã hoàn thành từ trước, chỉ review lại', emoji: '✅', scores: { mbti: { dimension: 'JP', value: 'J' } } },
+      { id: '30B', text: 'Dồn sức làm vào phút cuối nhưng vẫn xong', emoji: '⚡', scores: { mbti: { dimension: 'JP', value: 'P' } } },
+      { id: '30C', text: 'Hoàn thành đúng hạn, không sớm không muộn', emoji: '⏳', scores: { mbti: { dimension: 'JP', value: 'J' } } },
+    ] },
+
+  // === PHẦN 2: HOLLAND RIASEC Career Discovery (Q31-Q59) ===
+  { id: 31, layer: 'career', text: 'Hoạt động nào bạn cảm thấy hào hứng nhất?',
+    subtitle: 'Khám phá sở thích nghề nghiệp', type: 'single', options: [
+      { id: '31A', text: 'Tháo lắp đồ điện tử, sửa chữa đồ vật', emoji: '🔧', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '31B', text: 'Nghiên cứu, tìm hiểu một vấn đề khó', emoji: '🔬', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '31C', text: 'Vẽ, thiết kế, sáng tạo nội dung', emoji: '🎨', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '31D', text: 'Giúp đỡ, dạy kèm hoặc tư vấn cho người khác', emoji: '🫶', scores: { riasec: { dimensions: ['S'], weight: 2 } } },
+    ] },
+  { id: 32, layer: 'career', text: 'Nếu được chọn, bạn muốn tham gia CLB nào?', type: 'single', options: [
+      { id: '32A', text: 'CLB Robotics, Lập trình, Khoa học', emoji: '🤖', scores: { riasec: { dimensions: ['R','I'], weight: 1 } } },
+      { id: '32B', text: 'CLB Văn nghệ, Nhiếp ảnh, Thiết kế', emoji: '📸', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '32C', text: 'CLB Hùng biện, MC, Tình nguyện', emoji: '🎤', scores: { riasec: { dimensions: ['S','E'], weight: 1 } } },
+      { id: '32D', text: 'CLB Kinh doanh, Khởi nghiệp', emoji: '💼', scores: { riasec: { dimensions: ['E'], weight: 2 } } },
+    ] },
+  { id: 33, layer: 'career', text: 'Bạn bè thường nhờ bạn giúp việc gì?', type: 'single', options: [
+      { id: '33A', text: 'Sửa máy tính, cài phần mềm, fix lỗi', emoji: '💻', scores: { riasec: { dimensions: ['R','I'], weight: 1 } } },
+      { id: '33B', text: 'Thiết kế poster, chỉnh ảnh, làm video', emoji: '🎬', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '33C', text: 'Lắng nghe tâm sự, cho lời khuyên', emoji: '💬', scores: { riasec: { dimensions: ['S'], weight: 2 } } },
+      { id: '33D', text: 'Tổ chức sự kiện, quản lý nhóm', emoji: '📊', scores: { riasec: { dimensions: ['E','C'], weight: 1 } } },
+    ] },
+  { id: 34, layer: 'career', text: 'Công việc lý tưởng trong mắt bạn là gì?', type: 'single', options: [
+      { id: '34A', text: 'Tạo ra sản phẩm thật, kết quả rõ ràng', emoji: '🏗️', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '34B', text: 'Suy nghĩ sâu, giải bài toán phức tạp', emoji: '🧩', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '34C', text: 'Giao tiếp, kết nối và truyền cảm hứng', emoji: '🌟', scores: { riasec: { dimensions: ['S','E'], weight: 1 } } },
+      { id: '34D', text: 'Làm việc có hệ thống, chính xác, ổn định', emoji: '📑', scores: { riasec: { dimensions: ['C'], weight: 2 } } },
+    ] },
+  { id: 35, layer: 'career', text: 'Môn học nào bạn yêu thích nhất?', type: 'single', options: [
+      { id: '35A', text: 'Toán, Lý, Tin học', emoji: '🔢', scores: { riasec: { dimensions: ['R','I'], weight: 1 } } },
+      { id: '35B', text: 'Văn, Nhạc, Mỹ thuật', emoji: '🎵', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '35C', text: 'Sinh, GDCD, Sử', emoji: '📚', scores: { riasec: { dimensions: ['S'], weight: 2 } } },
+      { id: '35D', text: 'Kinh tế, Ngoại ngữ', emoji: '💹', scores: { riasec: { dimensions: ['E','C'], weight: 1 } } },
+    ] },
+  { id: 36, layer: 'career', text: 'Khi xem YouTube, bạn hay xem kênh nào?', type: 'single', options: [
+      { id: '36A', text: 'Công nghệ, DIY, review đồ điện tử', emoji: '📱', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '36B', text: 'Khoa học, bí ẩn, TED Talks', emoji: '🧪', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '36C', text: 'Nghệ thuật, âm nhạc, vlog sáng tạo', emoji: '🎨', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '36D', text: 'Kinh doanh, motivation, phát triển bản thân', emoji: '📈', scores: { riasec: { dimensions: ['E'], weight: 2 } } },
+    ] },
+  { id: 37, layer: 'career', text: 'Bạn thích làm gì trong thời gian rảnh?', type: 'single', options: [
+      { id: '37A', text: 'Tập thể thao, hoạt động ngoài trời', emoji: '⚽', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '37B', text: 'Đọc sách, nghiên cứu chủ đề yêu thích', emoji: '📖', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '37C', text: 'Dạy kèm, tình nguyện, giúp đỡ người khác', emoji: '🤲', scores: { riasec: { dimensions: ['S'], weight: 2 } } },
+      { id: '37D', text: 'Lên ý tưởng kinh doanh, bán hàng online', emoji: '🛍️', scores: { riasec: { dimensions: ['E'], weight: 2 } } },
+    ] },
+  { id: 38, layer: 'career', text: 'Game bạn thích chơi nhất thuộc thể loại:', type: 'single', options: [
+      { id: '38A', text: 'Xây dựng, craft, simulation', emoji: '🏰', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '38B', text: 'Strategy, puzzle, brain teaser', emoji: '♟️', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '38C', text: 'Sáng tạo, sandbox, music game', emoji: '🎮', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '38D', text: 'Multiplayer, team battle, social game', emoji: '🎯', scores: { riasec: { dimensions: ['S','E'], weight: 1 } } },
+    ] },
+  { id: 39, layer: 'career', text: 'Nếu mở quán cafe, bạn muốn phụ trách:', type: 'single', options: [
+      { id: '39A', text: 'Pha chế, nghiên cứu công thức mới', emoji: '☕', scores: { riasec: { dimensions: ['R','I'], weight: 1 } } },
+      { id: '39B', text: 'Thiết kế nội thất, menu, brand identity', emoji: '🎨', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '39C', text: 'Phục vụ khách, tạo trải nghiệm tốt', emoji: '😊', scores: { riasec: { dimensions: ['S'], weight: 2 } } },
+      { id: '39D', text: 'Quản lý kinh doanh, marketing', emoji: '💰', scores: { riasec: { dimensions: ['E','C'], weight: 1 } } },
+    ] },
+  { id: 40, layer: 'career', text: 'Tình huống nào khiến bạn cảm thấy thỏa mãn nhất?', type: 'single', options: [
+      { id: '40A', text: 'Sửa được đồ hỏng, hoàn thành sản phẩm DIY', emoji: '🔧', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '40B', text: 'Giải được bài toán khó mà ai cũng bó tay', emoji: '🏆', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '40C', text: 'Tác phẩm/bài viết của mình được khen ngợi', emoji: '⭐', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '40D', text: 'Giúp được ai đó vượt qua khó khăn', emoji: '🤗', scores: { riasec: { dimensions: ['S'], weight: 2 } } },
+    ] },
+  { id: 41, layer: 'career', text: 'Bạn mơ ước trở thành:', type: 'single', options: [
+      { id: '41A', text: 'Kỹ sư, lập trình viên, kiến trúc sư', emoji: '👨‍💻', scores: { riasec: { dimensions: ['R','I'], weight: 1 } } },
+      { id: '41B', text: 'Nhà thiết kế, đạo diễn, nghệ sĩ', emoji: '🎬', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '41C', text: 'Bác sĩ, giáo viên, nhà tâm lý', emoji: '👨‍⚕️', scores: { riasec: { dimensions: ['S'], weight: 2 } } },
+      { id: '41D', text: 'CEO, doanh nhân, nhà ngoại giao', emoji: '👔', scores: { riasec: { dimensions: ['E'], weight: 2 } } },
+    ] },
+  { id: 42, layer: 'career', text: 'Khi làm project nhóm, vai trò bạn thường đảm nhận:', type: 'single', options: [
+      { id: '42A', text: 'Người thực hiện kỹ thuật chính', emoji: '⚙️', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '42B', text: 'Người nghiên cứu, phân tích dữ liệu', emoji: '📊', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '42C', text: 'Người thiết kế, trình bày', emoji: '🖌️', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '42D', text: 'Người điều phối, phân công', emoji: '👑', scores: { riasec: { dimensions: ['E','C'], weight: 1 } } },
+    ] },
+  { id: 43, layer: 'career', text: 'Bạn thích đọc mục nào trên báo?', type: 'single', options: [
+      { id: '43A', text: 'Công nghệ, khoa học, đổi mới', emoji: '🔬', scores: { riasec: { dimensions: ['R','I'], weight: 1 } } },
+      { id: '43B', text: 'Văn hóa, nghệ thuật, giải trí', emoji: '🎭', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '43C', text: 'Xã hội, giáo dục, sức khỏe', emoji: '📰', scores: { riasec: { dimensions: ['S'], weight: 2 } } },
+      { id: '43D', text: 'Kinh tế, tài chính, startup', emoji: '💹', scores: { riasec: { dimensions: ['E','C'], weight: 1 } } },
+    ] },
+  { id: 44, layer: 'career', text: 'Kỹ năng nào bạn muốn học nhất?', type: 'single', options: [
+      { id: '44A', text: 'Lập trình, sửa chữa, kỹ thuật', emoji: '💻', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '44B', text: 'Phân tích dữ liệu, nghiên cứu', emoji: '📈', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '44C', text: 'Nhiếp ảnh, thiết kế đồ họa', emoji: '📷', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '44D', text: 'Lãnh đạo, thuyết trình, đàm phán', emoji: '🎯', scores: { riasec: { dimensions: ['E'], weight: 2 } } },
+    ] },
+  { id: 45, layer: 'career', text: 'Nếu giành giải thưởng lớn, bạn muốn đầu tư vào:', type: 'single', options: [
+      { id: '45A', text: 'Mua thiết bị công nghệ, dụng cụ', emoji: '🖥️', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '45B', text: 'Tham gia khóa học chuyên sâu, nghiên cứu', emoji: '🎓', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '45C', text: 'Studio sáng tạo, thiết bị nghệ thuật', emoji: '🎨', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '45D', text: 'Khởi nghiệp, mở business nhỏ', emoji: '🚀', scores: { riasec: { dimensions: ['E'], weight: 2 } } },
+    ] },
+  { id: 46, layer: 'career', text: 'Phim tài liệu nào hấp dẫn bạn nhất?', type: 'single', options: [
+      { id: '46A', text: 'Cách chế tạo máy bay, tàu vũ trụ', emoji: '🚀', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '46B', text: 'Bí ẩn lịch sử, vũ trụ, thiên nhiên', emoji: '🌌', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '46C', text: 'Cuộc đời nghệ sĩ, nhà sáng tạo', emoji: '🎸', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '46D', text: 'Thành công doanh nhân, chiến lược kinh doanh', emoji: '🏢', scores: { riasec: { dimensions: ['E'], weight: 2 } } },
+    ] },
+  { id: 47, layer: 'career', text: 'Khi đến một nơi mới, bạn quan tâm:', type: 'single', options: [
+      { id: '47A', text: 'Cơ sở hạ tầng, công trình kiến trúc', emoji: '🏛️', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '47B', text: 'Lịch sử, văn hóa, con người nơi đó', emoji: '📘', scores: { riasec: { dimensions: ['I','S'], weight: 1 } } },
+      { id: '47C', text: 'Phong cảnh đẹp, cơ hội chụp ảnh', emoji: '📷', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '47D', text: 'Cơ hội kinh doanh, thị trường địa phương', emoji: '💼', scores: { riasec: { dimensions: ['E'], weight: 2 } } },
+    ] },
+  { id: 48, layer: 'career', text: 'Bạn thích kiểu bài tập nào hơn?', type: 'single', options: [
+      { id: '48A', text: 'Thí nghiệm, thực hành, làm mô hình', emoji: '🧪', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '48B', text: 'Bài luận phân tích, nghiên cứu đề tài', emoji: '📝', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '48C', text: 'Bài sáng tạo tự do, trình bày theo cách riêng', emoji: '✨', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '48D', text: 'Bài nhóm, phỏng vấn, khảo sát', emoji: '👥', scores: { riasec: { dimensions: ['S','E'], weight: 1 } } },
+    ] },
+  { id: 49, layer: 'career', text: 'Nếu viết blog, bạn sẽ viết về chủ đề:', type: 'single', options: [
+      { id: '49A', text: 'Review công nghệ, hướng dẫn kỹ thuật', emoji: '⌨️', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '49B', text: 'Chia sẻ kiến thức, phân tích xu hướng', emoji: '🔍', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '49C', text: 'Truyện ngắn, thơ, chia sẻ nghệ thuật', emoji: '✍️', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '49D', text: 'Kinh nghiệm kinh doanh, phát triển bản thân', emoji: '📈', scores: { riasec: { dimensions: ['E'], weight: 2 } } },
+    ] },
+  { id: 50, layer: 'career', text: 'Trong nhóm bạn, bạn được gọi là:', type: 'single', options: [
+      { id: '50A', text: 'Thợ sửa: ai cần gì hỏng gì đều tìm bạn', emoji: '🔧', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '50B', text: 'Bách khoa: biết rất nhiều thứ, tra Google giỏi', emoji: '🤓', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '50C', text: 'Nghệ sĩ: sáng tạo, có gu thẩm mỹ', emoji: '🎨', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '50D', text: 'Trưởng nhóm: tổ chức, quyết định mọi thứ', emoji: '👑', scores: { riasec: { dimensions: ['E'], weight: 2 } } },
+    ] },
+  { id: 51, layer: 'career', text: 'App yêu thích trên điện thoại:', type: 'single', options: [
+      { id: '51A', text: 'App tiện ích, lập trình, đo lường', emoji: '📐', scores: { riasec: { dimensions: ['R','C'], weight: 1 } } },
+      { id: '51B', text: 'App đọc sách, Wikipedia, podcast', emoji: '🎧', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '51C', text: 'App chỉnh ảnh, thiết kế, TikTok', emoji: '📱', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '51D', text: 'App chat nhóm, mạng xã hội', emoji: '💬', scores: { riasec: { dimensions: ['S','E'], weight: 1 } } },
+    ] },
+  { id: 52, layer: 'career', text: 'Bạn giải quyết mâu thuẫn trong nhóm bằng cách:', type: 'single', options: [
+      { id: '52A', text: 'Phân tích dữ liệu, tìm giải pháp tối ưu', emoji: '📊', scores: { riasec: { dimensions: ['I','C'], weight: 1 } } },
+      { id: '52B', text: 'Nói chuyện riêng, lắng nghe từng người', emoji: '🤝', scores: { riasec: { dimensions: ['S'], weight: 2 } } },
+      { id: '52C', text: 'Đề xuất ý tưởng mới cả nhóm cùng thích', emoji: '💡', scores: { riasec: { dimensions: ['A','E'], weight: 1 } } },
+      { id: '52D', text: 'Bỏ phiếu dân chủ, theo số đông', emoji: '🗳️', scores: { riasec: { dimensions: ['C'], weight: 2 } } },
+    ] },
+  { id: 53, layer: 'career', text: 'Khi được tặng sách, bạn thích nhận:', type: 'single', options: [
+      { id: '53A', text: 'Sách hướng dẫn thực hành, DIY', emoji: '🛠️', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '53B', text: 'Sách khoa học, triết học, lý thuyết', emoji: '📘', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '53C', text: 'Sách nghệ thuật, tiểu thuyết, thơ', emoji: '📕', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '53D', text: 'Sách quản trị, tài chính cá nhân', emoji: '💼', scores: { riasec: { dimensions: ['E','C'], weight: 1 } } },
+    ] },
+  { id: 54, layer: 'career', text: 'Dự án tốt nghiệp mơ ước của bạn:', type: 'single', options: [
+      { id: '54A', text: 'Chế tạo robot hoặc ứng dụng phần mềm', emoji: '🤖', scores: { riasec: { dimensions: ['R','I'], weight: 1 } } },
+      { id: '54B', text: 'Phim ngắn, triển lãm nghệ thuật', emoji: '🎬', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '54C', text: 'Dự án cộng đồng, chiến dịch xã hội', emoji: '🌍', scores: { riasec: { dimensions: ['S'], weight: 2 } } },
+      { id: '54D', text: 'Kế hoạch kinh doanh startup', emoji: '🚀', scores: { riasec: { dimensions: ['E'], weight: 2 } } },
+    ] },
+  { id: 55, layer: 'career', text: 'Bạn hứng thú với vấn đề gì nhất?', type: 'single', options: [
+      { id: '55A', text: 'Biến đổi khí hậu, năng lượng tái tạo', emoji: '🌿', scores: { riasec: { dimensions: ['R','I'], weight: 1 } } },
+      { id: '55B', text: 'Bất bình đẳng xã hội, nhân quyền', emoji: '✊', scores: { riasec: { dimensions: ['S'], weight: 2 } } },
+      { id: '55C', text: 'Bảo tồn văn hóa, nghệ thuật truyền thống', emoji: '🏯', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '55D', text: 'Khởi nghiệp, đổi mới sáng tạo', emoji: '💡', scores: { riasec: { dimensions: ['E'], weight: 2 } } },
+    ] },
+  { id: 56, layer: 'career', text: 'Khi xem tin tức, bạn quan tâm mục:', type: 'single', options: [
+      { id: '56A', text: 'Khám phá khoa học, công nghệ mới', emoji: '🔭', scores: { riasec: { dimensions: ['R','I'], weight: 1 } } },
+      { id: '56B', text: 'Văn hóa, du lịch, lifestyle', emoji: '🗺️', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '56C', text: 'Giáo dục, y tế, phúc lợi xã hội', emoji: '🏥', scores: { riasec: { dimensions: ['S'], weight: 2 } } },
+      { id: '56D', text: 'Thị trường, chứng khoán, kinh tế', emoji: '📈', scores: { riasec: { dimensions: ['E','C'], weight: 1 } } },
+    ] },
+  { id: 57, layer: 'career', text: 'Bạn thích loại nhạc nào nhất?', type: 'single', options: [
+      { id: '57A', text: 'EDM, nhạc điện tử, synthwave', emoji: '🎹', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '57B', text: 'Classical, jazz, nhạc thể nghiệm', emoji: '🎻', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '57C', text: 'Indie, folk, nhạc tâm trạng', emoji: '🎸', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '57D', text: 'Pop, hip-hop, nhạc trending', emoji: '🎵', scores: { riasec: { dimensions: ['S','E'], weight: 1 } } },
+    ] },
+  { id: 58, layer: 'career', text: 'Nếu tham gia cuộc thi, bạn chọn:', type: 'single', options: [
+      { id: '58A', text: 'Cuộc thi sáng chế, STEM, hackathon', emoji: '💡', scores: { riasec: { dimensions: ['R','I'], weight: 1 } } },
+      { id: '58B', text: 'Cuộc thi sáng tạo nội dung, design', emoji: '🎨', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '58C', text: 'Cuộc thi hùng biện, MC, talent show', emoji: '🎤', scores: { riasec: { dimensions: ['S','E'], weight: 1 } } },
+      { id: '58D', text: 'Cuộc thi khởi nghiệp, business case', emoji: '📊', scores: { riasec: { dimensions: ['E','C'], weight: 1 } } },
+    ] },
+  { id: 59, layer: 'career', text: 'Khi làm việc, bạn thích môi trường:', type: 'single', options: [
+      { id: '59A', text: 'Phòng lab/workshop với dụng cụ đầy đủ', emoji: '🔬', scores: { riasec: { dimensions: ['R'], weight: 2 } } },
+      { id: '59B', text: 'Thư viện yên tĩnh, nhiều tài liệu', emoji: '📚', scores: { riasec: { dimensions: ['I'], weight: 2 } } },
+      { id: '59C', text: 'Studio sáng tạo, trang trí đẹp', emoji: '🖼️', scores: { riasec: { dimensions: ['A'], weight: 2 } } },
+      { id: '59D', text: 'Văn phòng năng động, nhiều tương tác', emoji: '🏢', scores: { riasec: { dimensions: ['S','E'], weight: 1 } } },
+    ] },
+
+  // === PHẦN 3: Năng lực & Bối cảnh (Q60-Q88) ===
+  { id: 60, layer: 'competency', text: 'Trình độ tiếng Anh hiện tại?',
+    subtitle: 'Giúp mình đề xuất lộ trình phù hợp', type: 'single', options: [
+      { id: '60A', text: 'Mới bắt đầu, chưa tự tin giao tiếp', emoji: '🌱', scores: { competency: { skill: 'english', level: 1 } } },
+      { id: '60B', text: 'Biết cơ bản, đọc được nhưng nói còn khó', emoji: '📖', scores: { competency: { skill: 'english', level: 2 } } },
+      { id: '60C', text: 'Khá ổn, đang ôn thi IELTS/TOEIC', emoji: '📝', scores: { competency: { skill: 'english', level: 3 } } },
+      { id: '60D', text: 'Đã có chứng chỉ quốc tế', emoji: '🏅', scores: { competency: { skill: 'english', level: 4 } } },
+    ] },
+  { id: 61, layer: 'competency', text: 'Khả năng tự học của bạn?', type: 'single', options: [
+      { id: '61A', text: 'Cần có người hướng dẫn, khó tự học', emoji: '🤚', scores: { competency: { skill: 'self_study', level: 1 } } },
+      { id: '61B', text: 'Tự học được nhưng cần lộ trình rõ', emoji: '🗺️', scores: { competency: { skill: 'self_study', level: 2 } } },
+      { id: '61C', text: 'Tự tìm tài liệu và học tốt', emoji: '🚀', scores: { competency: { skill: 'self_study', level: 3 } } },
+    ] },
+  { id: 62, layer: 'competency', text: 'Kỹ năng mềm nào tự tin nhất?', type: 'single', options: [
+      { id: '62A', text: 'Thuyết trình, giao tiếp trước đám đông', emoji: '🎙️', scores: { competency: { skill: 'soft_skill', level: 3 } } },
+      { id: '62B', text: 'Làm việc nhóm, hợp tác phối hợp', emoji: '🤝', scores: { competency: { skill: 'soft_skill', level: 2 } } },
+      { id: '62C', text: 'Tư duy logic, phân tích vấn đề', emoji: '🧠', scores: { competency: { skill: 'soft_skill', level: 2 } } },
+      { id: '62D', text: 'Chưa tự tin, muốn phát triển thêm', emoji: '💪', scores: { competency: { skill: 'soft_skill', level: 1 } } },
+    ] },
+  { id: 63, layer: 'competency', text: 'Bạn có thể làm gì bằng tiếng Anh?', type: 'single', options: [
+      { id: '63A', text: 'Chào hỏi đơn giản, đọc từ vựng cơ bản', emoji: '👋', scores: { competency: { skill: 'english', level: 1 } } },
+      { id: '63B', text: 'Đọc hiểu bài báo, xem phim có sub', emoji: '📰', scores: { competency: { skill: 'english', level: 2 } } },
+      { id: '63C', text: 'Giao tiếp tự tin, viết email/bài luận', emoji: '✍️', scores: { competency: { skill: 'english', level: 3 } } },
+      { id: '63D', text: 'Thuyết trình, debate bằng tiếng Anh', emoji: '🎓', scores: { competency: { skill: 'english', level: 4 } } },
+    ] },
+  { id: 64, layer: 'competency', text: 'Khi gặp bài tập khó, bạn thường:', type: 'single', options: [
+      { id: '64A', text: 'Chờ thầy cô giảng lại, nhờ bạn giải giúp', emoji: '🆘', scores: { competency: { skill: 'self_study', level: 1 } } },
+      { id: '64B', text: 'Tự xem video bài giảng online', emoji: '📱', scores: { competency: { skill: 'self_study', level: 2 } } },
+      { id: '64C', text: 'Tự nghiên cứu nhiều nguồn cho đến khi hiểu', emoji: '🔍', scores: { competency: { skill: 'self_study', level: 3 } } },
+    ] },
+  { id: 65, layer: 'competency', text: 'Khi thuyết trình trước lớp, bạn:', type: 'single', options: [
+      { id: '65A', text: 'Rất lo lắng, tránh được thì tránh', emoji: '😰', scores: { competency: { skill: 'soft_skill', level: 1 } } },
+      { id: '65B', text: 'Chuẩn bị kỹ thì cũng ổn', emoji: '📋', scores: { competency: { skill: 'soft_skill', level: 2 } } },
+      { id: '65C', text: 'Tự tin, thích trình bày ý tưởng', emoji: '🌟', scores: { competency: { skill: 'soft_skill', level: 3 } } },
+    ] },
+  { id: 66, layer: 'competency', text: 'Bạn tiếp xúc tiếng Anh qua kênh nào?', type: 'single', options: [
+      { id: '66A', text: 'Chỉ học ở trường, ít dùng ngoài', emoji: '🏫', scores: { competency: { skill: 'english', level: 1 } } },
+      { id: '66B', text: 'Xem phim/nghe nhạc tiếng Anh thường xuyên', emoji: '🎬', scores: { competency: { skill: 'english', level: 2 } } },
+      { id: '66C', text: 'Đọc sách/blog tiếng Anh, dùng app học', emoji: '📲', scores: { competency: { skill: 'english', level: 3 } } },
+      { id: '66D', text: 'Tham gia cộng đồng quốc tế, chat với người nước ngoài', emoji: '🌐', scores: { competency: { skill: 'english', level: 4 } } },
+    ] },
+  { id: 67, layer: 'competency', text: 'Bạn quản lý việc học như thế nào?', type: 'single', options: [
+      { id: '67A', text: 'Học theo lịch của trường, ít tự ôn thêm', emoji: '🏫', scores: { competency: { skill: 'self_study', level: 1 } } },
+      { id: '67B', text: 'Có lịch ôn tập riêng nhưng hay trì hoãn', emoji: '⏰', scores: { competency: { skill: 'self_study', level: 2 } } },
+      { id: '67C', text: 'Tự lập kế hoạch chi tiết và tuân thủ tốt', emoji: '📊', scores: { competency: { skill: 'self_study', level: 3 } } },
+    ] },
+  { id: 68, layer: 'competency', text: 'Trong một dự án nhóm, bạn thường:', type: 'single', options: [
+      { id: '68A', text: 'Làm phần mình được phân công, ít tương tác', emoji: '📝', scores: { competency: { skill: 'soft_skill', level: 1 } } },
+      { id: '68B', text: 'Tham gia thảo luận, đóng góp ý kiến', emoji: '💬', scores: { competency: { skill: 'soft_skill', level: 2 } } },
+      { id: '68C', text: 'Đứng ra điều phối, phân chia và theo dõi tiến độ', emoji: '👑', scores: { competency: { skill: 'soft_skill', level: 3 } } },
+    ] },
+  { id: 69, layer: 'competency', text: 'Mục tiêu tiếng Anh trong 1-2 năm tới?', type: 'single', options: [
+      { id: '69A', text: 'Chưa có mục tiêu cụ thể', emoji: '🤷', scores: { competency: { skill: 'english', level: 1 } } },
+      { id: '69B', text: 'Đạt B1-B2, giao tiếp cơ bản tốt hơn', emoji: '📈', scores: { competency: { skill: 'english', level: 2 } } },
+      { id: '69C', text: 'Đạt IELTS 6.0-6.5 hoặc tương đương', emoji: '🎯', scores: { competency: { skill: 'english', level: 3 } } },
+      { id: '69D', text: 'Đạt IELTS 7.0+ để du học', emoji: '✈️', scores: { competency: { skill: 'english', level: 4 } } },
+    ] },
+  { id: 70, layer: 'competency', text: 'Khi muốn học kỹ năng mới, bạn:', type: 'single', options: [
+      { id: '70A', text: 'Đăng ký lớp học có thầy cô dạy', emoji: '🏫', scores: { competency: { skill: 'self_study', level: 1 } } },
+      { id: '70B', text: 'Xem tutorial trên YouTube/Coursera', emoji: '📱', scores: { competency: { skill: 'self_study', level: 2 } } },
+      { id: '70C', text: 'Tự tìm tài liệu, thực hành rồi xin feedback', emoji: '🔄', scores: { competency: { skill: 'self_study', level: 3 } } },
+    ] },
+  { id: 71, layer: 'competency', text: 'Bạn xử lý conflict trong nhóm bạn thế nào?', type: 'single', options: [
+      { id: '71A', text: 'Tránh xung đột, chờ tự giải quyết', emoji: '🙈', scores: { competency: { skill: 'soft_skill', level: 1 } } },
+      { id: '71B', text: 'Nói chuyện riêng với từng người', emoji: '💬', scores: { competency: { skill: 'soft_skill', level: 2 } } },
+      { id: '71C', text: 'Chủ động tổ chức họp, tìm giải pháp win-win', emoji: '🤝', scores: { competency: { skill: 'soft_skill', level: 3 } } },
+    ] },
+  { id: 72, layer: 'competency', text: 'Bạn đã từng dùng tiếng Anh trong tình huống thực tế chưa?', type: 'single', options: [
+      { id: '72A', text: 'Chưa bao giờ', emoji: '❌', scores: { competency: { skill: 'english', level: 1 } } },
+      { id: '72B', text: 'Vài lần khi du lịch hoặc gặp người nước ngoài', emoji: '🌍', scores: { competency: { skill: 'english', level: 2 } } },
+      { id: '72C', text: 'Thường xuyên trong học tập hoặc giao tiếp online', emoji: '💻', scores: { competency: { skill: 'english', level: 3 } } },
+      { id: '72D', text: 'Sử dụng hàng ngày trong công việc/học tập', emoji: '🌟', scores: { competency: { skill: 'english', level: 4 } } },
+    ] },
+  { id: 73, layer: 'competency', text: 'Khi ôn thi, bạn thường:', type: 'single', options: [
+      { id: '73A', text: 'Chỉ đọc lại vở, ít hệ thống hóa', emoji: '📖', scores: { competency: { skill: 'self_study', level: 1 } } },
+      { id: '73B', text: 'Tóm tắt, lập sơ đồ tư duy', emoji: '🗺️', scores: { competency: { skill: 'self_study', level: 2 } } },
+      { id: '73C', text: 'Tự ra đề, giải đề mẫu, phân tích lỗi sai', emoji: '✅', scores: { competency: { skill: 'self_study', level: 3 } } },
+    ] },
+  { id: 74, layer: 'competency', text: 'Nếu phải thuyết phục ai đó, bạn:', type: 'single', options: [
+      { id: '74A', text: 'Khó nói, thường bỏ cuộc', emoji: '😅', scores: { competency: { skill: 'soft_skill', level: 1 } } },
+      { id: '74B', text: 'Chuẩn bị lý lẽ nhưng thiếu tự tin', emoji: '📝', scores: { competency: { skill: 'soft_skill', level: 2 } } },
+      { id: '74C', text: 'Tự tin trình bày, sử dụng dữ liệu và cảm xúc', emoji: '🎯', scores: { competency: { skill: 'soft_skill', level: 3 } } },
+    ] },
+  { id: 75, layer: 'context', text: 'Mục tiêu học tập lớn nhất hiện tại?', type: 'single', options: [
+      { id: '75A', text: 'Đỗ đại học top đầu trong nước', emoji: '🎓', scores: { context: { factor: 'goal', value: 'Đỗ đại học top ', score: 3 } } },
+      { id: '75B', text: 'Du học nước ngoài', emoji: '✈️', scores: { context: { factor: 'goal', value: 'Du học nước ngo', score: 3 } } },
+      { id: '75C', text: 'Học nghề, có việc làm ngay', emoji: '🛠️', scores: { context: { factor: 'goal', value: 'Học nghề, có vi', score: 2 } } },
+      { id: '75D', text: 'Chưa biết, đang cần tìm hướng', emoji: '🤔', scores: { context: { factor: 'goal', value: 'Chưa biết, đang', score: 1 } } },
+    ] },
+  { id: 76, layer: 'context', text: 'Gia đình đầu tư cho việc học thêm bao nhiêu/tháng?', type: 'single', options: [
+      { id: '76A', text: 'Dưới 500.000đ', emoji: '💰', scores: { context: { factor: 'budget', value: 'Dưới 500.000đ', score: 1 } } },
+      { id: '76B', text: '500.000đ - 1.500.000đ', emoji: '💰', scores: { context: { factor: 'budget', value: '500.000đ - 1.50', score: 2 } } },
+      { id: '76C', text: '1.500.000đ - 3.000.000đ', emoji: '💰', scores: { context: { factor: 'budget', value: '1.500.000đ - 3.', score: 3 } } },
+      { id: '76D', text: 'Trên 3.000.000đ', emoji: '💰', scores: { context: { factor: 'budget', value: 'Trên 3.000.000đ', score: 3 } } },
+    ] },
+  { id: 77, layer: 'competency', text: 'Bạn dùng Internet cho việc học thế nào?', type: 'single', options: [
+      { id: '77A', text: 'Chủ yếu giải trí, ít dùng để học', emoji: '🎮', scores: { competency: { skill: 'self_study', level: 1 } } },
+      { id: '77B', text: 'Tra cứu bài tập, xem video bài giảng', emoji: '🔍', scores: { competency: { skill: 'self_study', level: 2 } } },
+      { id: '77C', text: 'Tham gia khóa học online, forum học thuật', emoji: '🎓', scores: { competency: { skill: 'self_study', level: 3 } } },
+    ] },
+  { id: 78, layer: 'competency', text: 'Bạn phản ứng thế nào khi nhận phê bình?', type: 'single', options: [
+      { id: '78A', text: 'Buồn/khó chịu, mất động lực', emoji: '😢', scores: { competency: { skill: 'soft_skill', level: 1 } } },
+      { id: '78B', text: 'Chấp nhận nhưng cần thời gian suy nghĩ', emoji: '🤔', scores: { competency: { skill: 'soft_skill', level: 2 } } },
+      { id: '78C', text: 'Cảm ơn và tìm cách cải thiện ngay', emoji: '💪', scores: { competency: { skill: 'soft_skill', level: 3 } } },
+    ] },
+  { id: 79, layer: 'competency', text: 'Bạn đánh giá phát âm tiếng Anh của mình?', type: 'single', options: [
+      { id: '79A', text: 'Chưa tự tin, sợ nói sai', emoji: '😰', scores: { competency: { skill: 'english', level: 1 } } },
+      { id: '79B', text: 'Được nhưng còn nặng accent', emoji: '🗣️', scores: { competency: { skill: 'english', level: 2 } } },
+      { id: '79C', text: 'Rõ ràng, người nước ngoài hiểu được', emoji: '✅', scores: { competency: { skill: 'english', level: 3 } } },
+      { id: '79D', text: 'Rất tốt, gần native speaker', emoji: '🌟', scores: { competency: { skill: 'english', level: 4 } } },
+    ] },
+  { id: 80, layer: 'competency', text: 'Bạn có thói quen đọc sách không?', type: 'single', options: [
+      { id: '80A', text: 'Hiếm khi đọc sách ngoài sách giáo khoa', emoji: '📚', scores: { competency: { skill: 'self_study', level: 1 } } },
+      { id: '80B', text: 'Đọc 1-2 cuốn/tháng, chủ yếu truyện', emoji: '📖', scores: { competency: { skill: 'self_study', level: 2 } } },
+      { id: '80C', text: 'Đọc thường xuyên, cả sách chuyên môn', emoji: '📘', scores: { competency: { skill: 'self_study', level: 3 } } },
+    ] },
+  { id: 81, layer: 'competency', text: 'Bạn làm việc với người khó tính thế nào?', type: 'single', options: [
+      { id: '81A', text: 'Tránh tiếp xúc, không muốn đối đầu', emoji: '🚶', scores: { competency: { skill: 'soft_skill', level: 1 } } },
+      { id: '81B', text: 'Cố gắng hiểu góc nhìn của họ', emoji: '👁️', scores: { competency: { skill: 'soft_skill', level: 2 } } },
+      { id: '81C', text: 'Tìm điểm chung và xây dựng quan hệ tốt', emoji: '🤝', scores: { competency: { skill: 'soft_skill', level: 3 } } },
+    ] },
+  { id: 82, layer: 'competency', text: 'Bạn có thể viết bài luận tiếng Anh không?', type: 'single', options: [
+      { id: '82A', text: 'Chưa thể, thiếu từ vựng và ngữ pháp', emoji: '❌', scores: { competency: { skill: 'english', level: 1 } } },
+      { id: '82B', text: 'Viết đoạn ngắn, còn nhiều lỗi', emoji: '📝', scores: { competency: { skill: 'english', level: 2 } } },
+      { id: '82C', text: 'Viết được bài hoàn chỉnh, cần review', emoji: '✍️', scores: { competency: { skill: 'english', level: 3 } } },
+      { id: '82D', text: 'Viết mạch lạc, logic, ít lỗi', emoji: '📄', scores: { competency: { skill: 'english', level: 4 } } },
+    ] },
+  { id: 83, layer: 'competency', text: 'Bạn theo dõi tiến bộ học tập bằng cách nào?', type: 'single', options: [
+      { id: '83A', text: 'Không theo dõi cụ thể', emoji: '🤷', scores: { competency: { skill: 'self_study', level: 1 } } },
+      { id: '83B', text: 'Xem điểm thi, so với bạn bè', emoji: '📊', scores: { competency: { skill: 'self_study', level: 2 } } },
+      { id: '83C', text: 'Tự đặt KPI, ghi chép và review định kỳ', emoji: '📋', scores: { competency: { skill: 'self_study', level: 3 } } },
+    ] },
+  { id: 84, layer: 'competency', text: 'Bạn đặt ưu tiên cho deadline nhiều task thế nào?', type: 'single', options: [
+      { id: '84A', text: 'Làm cái nào gần nhất trước', emoji: '⏰', scores: { competency: { skill: 'soft_skill', level: 1 } } },
+      { id: '84B', text: 'Phân loại quan trọng/khẩn cấp', emoji: '📋', scores: { competency: { skill: 'soft_skill', level: 2 } } },
+      { id: '84C', text: 'Dùng phương pháp Eisenhower hoặc tương tự', emoji: '🎯', scores: { competency: { skill: 'soft_skill', level: 3 } } },
+    ] },
+  { id: 85, layer: 'context', text: 'Bạn đã có ý tưởng về ngành muốn theo đuổi?', type: 'single', options: [
+      { id: '85A', text: 'Hoàn toàn chưa biết', emoji: '🤷', scores: { context: { factor: 'career', value: 'Hoàn toàn chưa ', score: 1 } } },
+      { id: '85B', text: 'Có vài hướng nhưng chưa chắc chắn', emoji: '🤔', scores: { context: { factor: 'career', value: 'Có vài hướng nh', score: 2 } } },
+      { id: '85C', text: 'Biết khá rõ, muốn xác nhận lại', emoji: '💡', scores: { context: { factor: 'career', value: 'Biết khá rõ, mu', score: 3 } } },
+      { id: '85D', text: 'Đã quyết định và đang chuẩn bị', emoji: '🎯', scores: { context: { factor: 'career', value: 'Đã quyết định v', score: 4 } } },
+    ] },
+  { id: 86, layer: 'context', text: 'Gia đình hỗ trợ bạn trong việc chọn ngành ra sao?', type: 'single', options: [
+      { id: '86A', text: 'Để mình tự quyết định hoàn toàn', emoji: '🙋', scores: { context: { factor: 'support', value: 'Để mình tự quyế', score: 2 } } },
+      { id: '86B', text: 'Tư vấn nhưng tôn trọng ý kiến mình', emoji: '🤝', scores: { context: { factor: 'support', value: 'Tư vấn nhưng tô', score: 3 } } },
+      { id: '86C', text: 'Định hướng khá rõ, mong mình theo ngành cụ thể', emoji: '📋', scores: { context: { factor: 'support', value: 'Định hướng khá ', score: 2 } } },
+      { id: '86D', text: 'Chưa bàn về vấn đề này', emoji: '🤷', scores: { context: { factor: 'support', value: 'Chưa bàn về vấn', score: 1 } } },
+    ] },
+  { id: 87, layer: 'competency', text: 'Bạn có kế hoạch học tập trong kỳ nghỉ hè không?', type: 'single', options: [
+      { id: '87A', text: 'Chỉ nghỉ ngơi, ít học thêm', emoji: '🏖️', scores: { competency: { skill: 'self_study', level: 1 } } },
+      { id: '87B', text: 'Ôn lại kiến thức, học trước chương trình', emoji: '📚', scores: { competency: { skill: 'self_study', level: 2 } } },
+      { id: '87C', text: 'Đăng ký khóa học, thực tập, dự án cá nhân', emoji: '🚀', scores: { competency: { skill: 'self_study', level: 3 } } },
+    ] },
+  { id: 88, layer: 'competency', text: 'Khi cần giúp đỡ, bạn:', type: 'single', options: [
+      { id: '88A', text: 'Ngại nhờ vả, tự cố gắng', emoji: '😣', scores: { competency: { skill: 'soft_skill', level: 1 } } },
+      { id: '88B', text: 'Hỏi người quen thân, thầy cô', emoji: '🙋', scores: { competency: { skill: 'soft_skill', level: 2 } } },
+      { id: '88C', text: 'Chủ động tìm mentor, cộng đồng hỗ trợ', emoji: '🌐', scores: { competency: { skill: 'soft_skill', level: 3 } } },
+    ] },
+];
