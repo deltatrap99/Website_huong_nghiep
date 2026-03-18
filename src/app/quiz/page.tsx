@@ -379,8 +379,10 @@ export default function QuizPage() {
   /* ── Lead form ─────────────────── */
   if (showLeadForm) return <LeadCaptureForm />;
 
-  /* ── MBTI Section Intro Screen ─────────────────── */
+  /* ── Section Intro Screen ─────────────────── */
   if (sectionIntro) {
+    const isQuick = quizMode === 'quick';
+
     return (
       <div className="min-h-screen gradient-quiz-bg flex items-center justify-center p-4 py-10">
         <motion.div
@@ -389,70 +391,119 @@ export default function QuizPage() {
           transition={{ duration: 0.5 }}
           className="w-full max-w-[640px]"
         >
-          {/* No progress dots here — only show Part 1 */}
-
           <div className="bg-white rounded-3xl shadow-card-xl overflow-hidden mb-5">
             {/* Header */}
-            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white">
+            <div className={`bg-gradient-to-r ${isQuick ? 'from-ge-blue to-ge-blue-light' : 'from-purple-600 to-indigo-600'} p-6 text-white`}>
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="text-white/70 text-xs font-bold uppercase tracking-widest block mb-1">Phần 1</span>
-                  <h2 className="font-heading font-extrabold text-2xl md:text-3xl mb-1">MBTI-Lite</h2>
-                  <p className="text-white/80 text-sm">Personality Assessment</p>
+                  {!isQuick && <span className="text-white/70 text-xs font-bold uppercase tracking-widest block mb-1">Phần 1</span>}
+                  <h2 className="font-heading font-extrabold text-2xl md:text-3xl mb-1">
+                    {isQuick ? 'Trắc nghiệm Hướng nghiệp' : 'MBTI-Lite'}
+                  </h2>
+                  <p className="text-white/80 text-sm">
+                    {isQuick ? 'Phiên bản nhanh • ~10 phút' : 'Personality Assessment'}
+                  </p>
                 </div>
-                <span className="text-5xl">🧠</span>
+                <span className="text-5xl">{isQuick ? '🚀' : '🧠'}</span>
               </div>
             </div>
 
             <div className="p-6 md:p-8">
               {/* Goal */}
-              <div className="bg-purple-50 border border-purple-200 rounded-2xl p-4 mb-6">
-                <p className="text-purple-700 font-semibold text-sm mb-1">🎯 Mục tiêu phần này</p>
+              <div className={`${isQuick ? 'bg-blue-50 border-blue-200' : 'bg-purple-50 border-purple-200'} border rounded-2xl p-4 mb-6`}>
+                <p className={`${isQuick ? 'text-blue-700' : 'text-purple-700'} font-semibold text-sm mb-1`}>🎯 Mục tiêu</p>
                 <p className="text-ge-gray-700 text-sm leading-relaxed">
-                  Khám phá phong cách tư duy và ra quyết định của bạn. Kết quả giúp xác định nhóm tính cách cốt lõi để kết hợp với RIASEC sau.
+                  {isQuick
+                    ? 'Khám phá nhanh tính cách & sở thích nghề nghiệp của bạn. Quiz nhanh kết hợp cả MBTI-Lite và HOLLAND RIASEC trong 1 bài duy nhất.'
+                    : 'Khám phá phong cách tư duy và ra quyết định của bạn. Kết quả giúp xác định nhóm tính cách cốt lõi để kết hợp với RIASEC sau.'}
                 </p>
               </div>
 
-              {/* MBTI 4 dimensions */}
-              <h3 className="font-heading font-bold text-ge-gray-900 mb-3 text-base">📋 MBTI phân loại theo 4 chiều</h3>
-              <div className="space-y-2.5 mb-6">
-                {[
-                  { letters: 'E / I', name: 'Hướng ngoại / Hướng nội', desc: 'Bạn nạp năng lượng từ việc giao tiếp với người khác (E) hay từ thời gian một mình (I)?' },
-                  { letters: 'S / N', name: 'Giác quan / Trực giác', desc: 'Bạn tin vào dữ liệu thực tế (S) hay các ý tưởng & khả năng trừu tượng (N)?' },
-                  { letters: 'T / F', name: 'Lý trí / Cảm xúc', desc: 'Bạn ra quyết định theo logic & phân tích (T) hay theo cảm xúc & giá trị (F)?' },
-                  { letters: 'J / P', name: 'Nguyên tắc / Linh hoạt', desc: 'Bạn thích lên kế hoạch rõ ràng (J) hay linh hoạt, ứng biến (P)?' },
-                ].map((dim) => (
-                  <div key={dim.letters} className="flex gap-3">
-                    <div className="shrink-0 w-14 h-9 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
-                      <span className="text-white font-extrabold text-xs">{dim.letters}</span>
+              {isQuick ? (
+                <>
+                  {/* Quick mode: combined overview */}
+                  <h3 className="font-heading font-bold text-ge-gray-900 mb-3 text-base">📋 Bài quiz đánh giá 2 yếu tố</h3>
+                  <div className="grid grid-cols-1 gap-3 mb-6">
+                    <div className="bg-purple-50 rounded-xl p-4 border border-purple-100">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-lg">🧠</span>
+                        <h4 className="font-bold text-purple-700 text-sm">MBTI-Lite — Tính cách</h4>
+                      </div>
+                      <p className="text-ge-gray-600 text-xs leading-relaxed">
+                        Bạn hướng ngoại hay nội? Ra quyết định theo logic hay cảm xúc? Thích kế hoạch hay linh hoạt?
+                      </p>
                     </div>
-                    <div>
-                      <p className="font-semibold text-ge-gray-900 text-sm">{dim.name}</p>
-                      <p className="text-ge-gray-500 text-xs leading-relaxed">{dim.desc}</p>
+                    <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-lg">🧭</span>
+                        <h4 className="font-bold text-blue-700 text-sm">HOLLAND RIASEC — Sở thích nghề nghiệp</h4>
+                      </div>
+                      <p className="text-ge-gray-600 text-xs leading-relaxed mb-2">
+                        Xác định nhóm nghề phù hợp theo 6 nhóm tính cách:
+                      </p>
+                      <div className="grid grid-cols-3 gap-1.5">
+                        {[
+                          { l: 'R', n: 'Thực tế', c: 'from-orange-400 to-amber-500' },
+                          { l: 'I', n: 'Nghiên cứu', c: 'from-blue-500 to-cyan-500' },
+                          { l: 'A', n: 'Nghệ thuật', c: 'from-pink-500 to-rose-500' },
+                          { l: 'S', n: 'Xã hội', c: 'from-green-500 to-emerald-500' },
+                          { l: 'E', n: 'Lãnh đạo', c: 'from-red-500 to-orange-500' },
+                          { l: 'C', n: 'Hệ thống', c: 'from-slate-500 to-gray-600' },
+                        ].map((t) => (
+                          <div key={t.l} className="flex items-center gap-1.5">
+                            <div className={`w-6 h-6 rounded-md bg-gradient-to-br ${t.c} flex items-center justify-center`}>
+                              <span className="text-white font-bold text-[10px]">{t.l}</span>
+                            </div>
+                            <span className="text-ge-gray-600 text-[11px]">{t.n}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                </>
+              ) : (
+                <>
+                  {/* Full mode: MBTI details */}
+                  <h3 className="font-heading font-bold text-ge-gray-900 mb-3 text-base">📋 MBTI phân loại theo 4 chiều</h3>
+                  <div className="space-y-2.5 mb-6">
+                    {[
+                      { letters: 'E / I', name: 'Hướng ngoại / Hướng nội', desc: 'Bạn nạp năng lượng từ việc giao tiếp với người khác (E) hay từ thời gian một mình (I)?' },
+                      { letters: 'S / N', name: 'Giác quan / Trực giác', desc: 'Bạn tin vào dữ liệu thực tế (S) hay các ý tưởng & khả năng trừu tượng (N)?' },
+                      { letters: 'T / F', name: 'Lý trí / Cảm xúc', desc: 'Bạn ra quyết định theo logic & phân tích (T) hay theo cảm xúc & giá trị (F)?' },
+                      { letters: 'J / P', name: 'Nguyên tắc / Linh hoạt', desc: 'Bạn thích lên kế hoạch rõ ràng (J) hay linh hoạt, ứng biến (P)?' },
+                    ].map((dim) => (
+                      <div key={dim.letters} className="flex gap-3">
+                        <div className="shrink-0 w-14 h-9 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
+                          <span className="text-white font-extrabold text-xs">{dim.letters}</span>
+                        </div>
+                        <div>
+                          <p className="font-semibold text-ge-gray-900 text-sm">{dim.name}</p>
+                          <p className="text-ge-gray-500 text-xs leading-relaxed">{dim.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
 
-              {/* 16 types note */}
-              <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 mb-6">
-                <p className="text-indigo-700 font-semibold text-sm mb-1">💡 16 nhóm tính cách</p>
-                <p className="text-ge-gray-600 text-xs leading-relaxed">
-                  Kết hợp 4 chiều tạo ra 16 nhóm tính cách (INTJ, ENFP, ISTJ...). Phiên bản rút gọn của chúng tôi tập trung vào 3 chiều quan trọng nhất cho hướng nghiệp: E/I, T/F và cách bạn tiếp cận học tập.
-                </p>
-              </div>
+                  <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 mb-6">
+                    <p className="text-indigo-700 font-semibold text-sm mb-1">💡 16 nhóm tính cách</p>
+                    <p className="text-ge-gray-600 text-xs leading-relaxed">
+                      Kết hợp 4 chiều tạo ra 16 nhóm tính cách (INTJ, ENFP, ISTJ...). Phiên bản rút gọn tập trung vào 3 chiều quan trọng nhất cho hướng nghiệp.
+                    </p>
+                  </div>
+                </>
+              )}
 
-              {/* Tips */}
+              {/* Tips - shared */}
               <div className="bg-ge-gray-50 rounded-2xl p-4 mb-6">
                 <p className="font-semibold text-ge-gray-700 text-sm mb-2.5">💡 Hướng dẫn trả lời</p>
                 <ul className="space-y-1.5">
                   {[
-                    'Chọn câu trả lời phản ánh con người thật của bạn, không phải người bạn muốn trở thành',
-                    'Trả lời theo bản năng — câu đầu tiên nảy ra thường là chính xác nhất',
+                    'Chọn câu trả lời phản ánh con người thật của bạn',
+                    'Trả lời theo bản năng — câu đầu tiên nảy ra thường chính xác nhất',
                     'Không có câu trả lời đúng hay sai — mọi tính cách đều có giá trị',
                   ].map((tip, i) => (
                     <li key={i} className="flex gap-2 text-sm text-ge-gray-600">
-                      <span className="text-purple-500 font-bold shrink-0">✓</span>
+                      <span className={`${isQuick ? 'text-ge-blue' : 'text-purple-500'} font-bold shrink-0`}>✓</span>
                       {tip}
                     </li>
                   ))}
@@ -462,9 +513,9 @@ export default function QuizPage() {
               {/* CTA */}
               <button
                 onClick={continueSectionIntro}
-                className="group w-full inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+                className={`group w-full inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full ${isQuick ? 'gradient-cta' : 'bg-gradient-to-r from-purple-600 to-indigo-600'} text-white font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300`}
               >
-                Bắt đầu Phần 1 (30 câu)
+                {isQuick ? 'Bắt đầu Quiz (~30 câu)' : 'Bắt đầu Phần 1 (30 câu)'}
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
