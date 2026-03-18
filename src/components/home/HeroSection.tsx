@@ -92,7 +92,7 @@ export default function HeroSection() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="font-heading font-extrabold text-4xl md:text-5xl lg:text-[3.5rem] text-white leading-[1.15] mb-6"
             >
-              <span className="block">Bạn phù hợp với</span>
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white via-ge-yellow to-white">Bạn phù hợp với</span>
               <span className="relative inline-block mt-1">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-ge-yellow via-ge-orange to-ge-coral text-5xl md:text-6xl lg:text-7xl">
                   ngành gì?
