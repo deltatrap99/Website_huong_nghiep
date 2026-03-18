@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
             utm_source: utm?.utm_source || null,
             utm_medium: utm?.utm_medium || null,
             utm_campaign: utm?.utm_campaign || null,
-            ambassador_ref: leadData?.ambassadorRef || utm?.ref || null,
+            ambassador_ref: utm?.utm_source || leadData?.ambassadorRef || utm?.ref || null,
           })
           .select('id')
           .single();
@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
               province: leadData.province,
               grade: leadData.grade,
               lead_tier: result.leadTier,
-              ambassador_ref: leadData.ambassadorRef || utm?.ref || null,
+              ambassador_ref: utm?.utm_source || leadData.ambassadorRef || utm?.ref || null,
             });
 
           if (leadError) {

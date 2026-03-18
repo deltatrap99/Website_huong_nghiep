@@ -2,7 +2,13 @@
 -- Run this in Supabase SQL Editor
 
 -- ==================================
--- 1. quiz_sessions
+-- STEP 1: Drop old quiz_results table (from previous schema)
+-- The old table has different columns and is incompatible.
+-- ==================================
+DROP TABLE IF EXISTS quiz_results CASCADE;
+
+-- ==================================
+-- 2. quiz_sessions
 -- ==================================
 CREATE TABLE IF NOT EXISTS quiz_sessions (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -19,13 +25,9 @@ CREATE TABLE IF NOT EXISTS quiz_sessions (
 );
 
 -- ==================================
--- 2. quiz_results (replace existing table if needed)
+-- 3. quiz_results (NEW schema)
 -- ==================================
--- Drop the old table if it exists (from previous implementation)
--- WARNING: This will delete existing data. Skip if you want to keep it.
--- DROP TABLE IF EXISTS quiz_results;
-
-CREATE TABLE IF NOT EXISTS quiz_results (
+CREATE TABLE quiz_results (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   session_id UUID REFERENCES quiz_sessions(id) ON DELETE CASCADE,
   mbti_lite TEXT NOT NULL,
@@ -41,7 +43,7 @@ CREATE TABLE IF NOT EXISTS quiz_results (
 );
 
 -- ==================================
--- 3. leads
+-- 4. leads
 -- ==================================
 CREATE TABLE IF NOT EXISTS leads (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -58,7 +60,7 @@ CREATE TABLE IF NOT EXISTS leads (
 );
 
 -- ==================================
--- 4. blog_posts (optional, Phase 4)
+-- 5. blog_posts (optional, Phase 4)
 -- ==================================
 CREATE TABLE IF NOT EXISTS blog_posts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -94,18 +96,23 @@ ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
 ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
 
 -- Allow service role full access (for API routes)
+DROP POLICY IF EXISTS "service_role_all_quiz_sessions" ON quiz_sessions;
 CREATE POLICY "service_role_all_quiz_sessions" ON quiz_sessions
   FOR ALL USING (true) WITH CHECK (true);
 
+DROP POLICY IF EXISTS "service_role_all_quiz_results" ON quiz_results;
 CREATE POLICY "service_role_all_quiz_results" ON quiz_results
   FOR ALL USING (true) WITH CHECK (true);
 
+DROP POLICY IF EXISTS "service_role_all_leads" ON leads;
 CREATE POLICY "service_role_all_leads" ON leads
   FOR ALL USING (true) WITH CHECK (true);
 
 -- Blog: public can read published posts
+DROP POLICY IF EXISTS "public_read_published_blog" ON blog_posts;
 CREATE POLICY "public_read_published_blog" ON blog_posts
   FOR SELECT USING (published = true);
 
+DROP POLICY IF EXISTS "service_role_all_blog" ON blog_posts;
 CREATE POLICY "service_role_all_blog" ON blog_posts
   FOR ALL USING (true) WITH CHECK (true);

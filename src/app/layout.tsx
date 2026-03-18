@@ -3,6 +3,7 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import StickyMobileCTA from '@/components/ui/StickyMobileCTA';
+import UTMCapture from '@/components/tracking/UTMCapture';
 
 export const metadata: Metadata = {
   title: 'Trắc nghiệm Hướng nghiệp Miễn phí | Galaxy Education',
@@ -28,6 +29,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="font-body antialiased">
+        <UTMCapture />
         <Header />
         <main>{children}</main>
         <Footer />
