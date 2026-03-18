@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowLeft, Clock, Share2, Sparkles } from 'lucide-react';
 import { blogPosts } from '@/data/blogPosts';
+import { blogContent } from '@/data/blogContent';
 import { analytics } from '@/lib/analytics';
 import { useEffect } from 'react';
 
@@ -32,6 +33,8 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
       </div>
     );
   }
+
+  const postContent = blogContent[post.slug];
 
   return (
     <div className="min-h-screen bg-ge-gray-50 pt-24 pb-16">
@@ -77,22 +80,17 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
           </div>
 
           {/* Content */}
-          <div className="prose prose-lg max-w-none text-ge-gray-700 leading-relaxed space-y-6">
-            <p className="text-lg font-medium text-ge-gray-800">{post.excerpt}</p>
-
-            <p>
-              Việc chọn ngành nghề phù hợp là một trong những quyết định quan trọng nhất trong cuộc đời mỗi người. 
-              Đặc biệt với các bạn học sinh cấp 2-3, đây là giai đoạn cần được hỗ trợ và định hướng đúng đắn.
-            </p>
-
-            <h2 className="font-heading font-bold text-2xl text-ge-gray-900 mt-8 mb-4">
-              Tại sao hướng nghiệp sớm rất quan trọng?
-            </h2>
-            <p>
-              Theo nghiên cứu, 60% sinh viên Việt Nam chọn sai ngành học, dẫn đến việc bỏ học hoặc chuyển ngành 
-              trong 2 năm đầu đại học. Việc tìm hiểu bản thân từ sớm giúp tiết kiệm thời gian, chi phí và 
-              tìm được con đường phù hợp nhất.
-            </p>
+          <div className="prose prose-lg max-w-none text-ge-gray-700 leading-relaxed space-y-6
+            [&>h2]:font-heading [&>h2]:font-bold [&>h2]:text-2xl [&>h2]:text-ge-gray-900 [&>h2]:mt-8 [&>h2]:mb-4
+            [&>p]:mb-4 [&>p>strong]:text-ge-gray-900 [&>p>em]:text-ge-gray-500">
+            {postContent ? (
+              <div dangerouslySetInnerHTML={{ __html: postContent }} />
+            ) : (
+              <>
+                <p className="text-lg font-medium text-ge-gray-800">{post.excerpt}</p>
+                <p>Bài viết đang được cập nhật nội dung chi tiết. Vui lòng quay lại sau.</p>
+              </>
+            )}
 
             {/* CTA in article */}
             <div className="my-8 p-6 rounded-2xl gradient-quiz-bg border border-ge-blue/10 text-center">
@@ -110,20 +108,6 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
                 <Sparkles size={16} /> Làm quiz ngay
               </Link>
             </div>
-
-            <h2 className="font-heading font-bold text-2xl text-ge-gray-900 mt-8 mb-4">
-              Framework HOLLAND RIASEC là gì?
-            </h2>
-            <p>
-              HOLLAND RIASEC là framework hướng nghiệp được phát triển bởi nhà tâm lý học John L. Holland. 
-              Framework này phân loại tính cách nghề nghiệp thành 6 nhóm: Realistic (Thực tế), 
-              Investigative (Nghiên cứu), Artistic (Nghệ thuật), Social (Xã hội), 
-              Enterprising (Quản lý), và Conventional (Hệ thống).
-            </p>
-            <p>
-              Bằng cách xác định nhóm tính cách chủ đạo, bạn có thể tìm ra những ngành nghề phù hợp nhất 
-              với bản thân, từ đó đưa ra quyết định chọn ngành, chọn trường đúng đắn hơn.
-            </p>
           </div>
 
           {/* Share */}

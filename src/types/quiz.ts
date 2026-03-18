@@ -121,4 +121,5 @@ export interface BlogPost {
   date: string;
   readTime: number;
   featured?: boolean;
+  content?: string;
 }
