@@ -389,24 +389,14 @@ export default function QuizPage() {
           transition={{ duration: 0.5 }}
           className="w-full max-w-[640px]"
         >
-          {/* Progress dots */}
-          <div className="flex items-center justify-center gap-3 mb-8">
-            {[0, 1, 2].map((i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 ${
-                  i === 0 ? 'border-purple-400 bg-purple-50 text-purple-600' : 'bg-white/60 text-ge-gray-400 border-ge-gray-200'
-                }`}>{i + 1}</div>
-                {i < 2 && <div className="w-12 h-0.5 bg-ge-gray-200" />}
-              </div>
-            ))}
-          </div>
+          {/* No progress dots here — only show Part 1 */}
 
           <div className="bg-white rounded-3xl shadow-card-xl overflow-hidden mb-5">
             {/* Header */}
             <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white">
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="text-white/70 text-xs font-bold uppercase tracking-widest block mb-1">Phần 1 / 3</span>
+                  <span className="text-white/70 text-xs font-bold uppercase tracking-widest block mb-1">Phần 1</span>
                   <h2 className="font-heading font-extrabold text-2xl md:text-3xl mb-1">MBTI-Lite</h2>
                   <p className="text-white/80 text-sm">Personality Assessment</p>
                 </div>
@@ -481,7 +471,7 @@ export default function QuizPage() {
           </div>
 
           <p className="text-center text-ge-gray-400 text-sm">
-            🎯 {quizMode === 'quick' ? 'Quiz nhanh ~30 câu' : '88 câu • 3 phần • ~30 phút'} • Miễn phí 100%
+            🎯 Miễn phí 100% • Không giới hạn thời gian
           </p>
         </motion.div>
       </div>
