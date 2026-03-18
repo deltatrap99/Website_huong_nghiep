@@ -86,7 +86,7 @@ export default function AmbassadorPage() {
               <HeartHandshake size={16} className="text-ge-yellow" />
               <span className="text-white/90 text-sm font-medium">Hơn 14.000 Đại sứ trên toàn quốc</span>
             </div>
-            <h1 className="font-heading font-extrabold text-3xl md:text-5xl mb-4">
+            <h1 className="font-heading font-extrabold text-3xl md:text-5xl mb-4 text-white">
               Kết nối với Đại sứ Giáo dục
             </h1>
             <p className="text-white/80 text-lg max-w-xl mx-auto">
