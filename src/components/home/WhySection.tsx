@@ -1,27 +1,27 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Zap, Target, Gift } from 'lucide-react';
+import { User, Map, HeartHandshake } from 'lucide-react';
 
 const reasons = [
   {
-    icon: Zap,
-    title: 'Nhanh chóng',
-    description: 'Chỉ 88 câu hỏi, hoàn thành trong 30 phút. Không cần đăng ký, không cần email.',
+    icon: User,
+    title: 'Hiểu rõ bản thân',
+    description: 'Khám phá nhóm tính cách, điểm mạnh và ngành nghề phù hợp nhất với con. Không phải ai cũng hợp với ngành "hot", quan trọng là ngành đúng với mình.',
     color: 'bg-ge-orange/10',
     iconColor: 'text-ge-orange',
   },
   {
-    icon: Target,
-    title: 'Chính xác',
-    description: 'Dựa trên framework HOLLAND RIASEC quốc tế, được sử dụng bởi hàng triệu người trên thế giới.',
+    icon: Map,
+    title: 'Lộ trình rõ ràng',
+    description: 'Không chỉ nói "bạn hợp ngành X" rồi dừng. Kết quả kèm lộ trình học cụ thể: học gì, từ khi nào, bắt đầu từ đâu.',
     color: 'bg-ge-blue/10',
     iconColor: 'text-ge-blue',
   },
   {
-    icon: Gift,
-    title: 'Miễn phí 100%',
-    description: 'Nhận kết quả chi tiết + gợi ý ngành nghề + lộ trình học tập hoàn toàn miễn phí.',
+    icon: HeartHandshake,
+    title: 'Chuyên gia đồng hành',
+    description: 'Sau trắc nghiệm, được tư vấn miễn phí 1:1 với chuyên gia giáo dục. Giải đáp mọi băn khoăn về ngành nghề, du học, hay lộ trình ôn thi.',
     color: 'bg-ge-green/10',
     iconColor: 'text-ge-green',
   },
@@ -39,10 +39,10 @@ export default function WhySection() {
           className="text-center mb-12 md:mb-16"
         >
           <h2 className="font-heading font-bold text-3xl md:text-4xl text-ge-gray-900 mb-4">
-            Tại sao nên làm trắc nghiệm?
+            Con đường nào dành cho bạn?
           </h2>
           <p className="text-ge-gray-600 text-lg max-w-xl mx-auto">
-            Đừng để lựa chọn ngành nghề trở thành điều bạn hối hận sau này
+            70% học sinh chọn ngành theo cảm tính. Đừng để 4 năm đại học trở thành sự lãng phí.
           </p>
         </motion.div>
 
