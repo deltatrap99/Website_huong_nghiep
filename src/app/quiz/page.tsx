@@ -38,10 +38,10 @@ const quizSections = [
     bgColor: 'bg-purple-50',
     iconColor: 'text-purple-500',
     description:
-      'Khám phá phong cách tư duy & ra quyết định của bạn dựa trên framework MBTI rút gọn — Hướng ngoại/Hướng nội, Lý tính/Cảm tính.',
+      'Khám phá phong cách tư duy & ra quyết định của bạn dựa trên framework MBTI rút gọn. Hướng ngoại/Hướng nội, Lý tính/Cảm tính.',
     items: [
-      'Cách bạn nạp năng lượng — Hướng ngoại (E) hay Hướng nội (I)',
-      'Cách bạn ra quyết định — Lý tính (T) hay Cảm tính (F)',
+      'Cách bạn nạp năng lượng: Hướng ngoại (E) hay Hướng nội (I)',
+      'Cách bạn ra quyết định: Lý tính (T) hay Cảm tính (F)',
       'Phong cách học tập thiên về thực hành hay lý thuyết',
       'Định hình tính cách nghề nghiệp cốt lõi',
     ],
@@ -54,14 +54,14 @@ const quizSections = [
     bgColor: 'bg-blue-50',
     iconColor: 'text-blue-500',
     description:
-      'Xác định nhóm nghề nghiệp phù hợp theo mô hình RIASEC quốc tế — 6 nhóm tính cách nghề nghiệp được hàng triệu người trên thế giới sử dụng.',
+      'Xác định nhóm nghề nghiệp phù hợp theo mô hình RIASEC quốc tế. 6 nhóm tính cách nghề nghiệp được hàng triệu người trên thế giới sử dụng.',
     items: [
-      'R — Realistic: Thực tế, thích làm việc với máy móc, công cụ',
-      'I — Investigative: Nghiên cứu, phân tích dữ liệu, khoa học',
-      'A — Artistic: Sáng tạo, nghệ thuật, thiết kế',
-      'S — Social: Giao tiếp, giáo dục, chăm sóc',
-      'E — Enterprising: Lãnh đạo, kinh doanh, thuyết phục',
-      'C — Conventional: Hệ thống, tổ chức, quản lý dữ liệu',
+      'R: Realistic - Thực tế, thích làm việc với máy móc, công cụ',
+      'I: Investigative - Nghiên cứu, phân tích dữ liệu, khoa học',
+      'A: Artistic - Sáng tạo, nghệ thuật, thiết kế',
+      'S: Social - Giao tiếp, giáo dục, chăm sóc',
+      'E: Enterprising - Lãnh đạo, kinh doanh, thuyết phục',
+      'C: Conventional - Hệ thống, tổ chức, quản lý dữ liệu',
     ],
   },
   {
@@ -221,8 +221,8 @@ export default function QuizPage() {
             </h1>
             <p className="text-ge-gray-600 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
               Kết hợp <span className="font-bold text-ge-navy">MBTI-Lite</span> và{' '}
-              <span className="font-bold text-ge-navy">HOLLAND RIASEC</span> — hai framework hướng nghiệp 
-              hàng đầu thế giới — để phân tích toàn diện tính cách và năng lực nghề nghiệp
+              <span className="font-bold text-ge-navy">HOLLAND RIASEC</span>, hai framework hướng nghiệp 
+              hàng đầu thế giới, để phân tích toàn diện tính cách và năng lực nghề nghiệp
             </p>
           </motion.div>
 
@@ -427,7 +427,7 @@ export default function QuizPage() {
                     <div className="bg-purple-50 rounded-xl p-4 border border-purple-100">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-lg">🧠</span>
-                        <h4 className="font-bold text-purple-700 text-sm">MBTI-Lite — Tính cách</h4>
+                        <h4 className="font-bold text-purple-700 text-sm">MBTI-Lite: Tính cách</h4>
                       </div>
                       <p className="text-ge-gray-600 text-xs leading-relaxed">
                         Bạn hướng ngoại hay nội? Ra quyết định theo logic hay cảm xúc? Thích kế hoạch hay linh hoạt?
@@ -436,7 +436,7 @@ export default function QuizPage() {
                     <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-lg">🧭</span>
-                        <h4 className="font-bold text-blue-700 text-sm">HOLLAND RIASEC — Sở thích nghề nghiệp</h4>
+                        <h4 className="font-bold text-purple-700 text-sm">MBTI-Lite: Tính cách</h4>
                       </div>
                       <p className="text-ge-gray-600 text-xs leading-relaxed mb-2">
                         Xác định nhóm nghề phù hợp theo 6 nhóm tính cách:
@@ -499,8 +499,8 @@ export default function QuizPage() {
                 <ul className="space-y-1.5">
                   {[
                     'Chọn câu trả lời phản ánh con người thật của bạn',
-                    'Trả lời theo bản năng — câu đầu tiên nảy ra thường chính xác nhất',
-                    'Không có câu trả lời đúng hay sai — mọi tính cách đều có giá trị',
+                    'Trả lời theo bản năng, câu đầu tiên nảy ra thường chính xác nhất',
+                    'Không có câu trả lời đúng hay sai, mọi tính cách đều có giá trị',
                   ].map((tip, i) => (
                     <li key={i} className="flex gap-2 text-sm text-ge-gray-600">
                       <span className={`${isQuick ? 'text-ge-blue' : 'text-purple-500'} font-bold shrink-0`}>✓</span>
@@ -547,14 +547,14 @@ export default function QuizPage() {
         sectionSub: 'Career Discovery',
         goal: 'Xác định nhóm nghề nghiệp phù hợp với bạn dựa trên 6 nhóm tính cách nghề nghiệp quốc tế.',
         structure: [
-          { letter: 'R', name: 'Realistic — Thực tế', desc: 'Thích làm việc với tay, máy móc, thiên nhiên. Nghề: kỹ sư, kiến trúc sư, thợ điện.' },
-          { letter: 'I', name: 'Investigative — Nghiên cứu', desc: 'Thích phân tích, khoa học, giải quyết vấn đề. Nghề: bác sĩ, nhà khoa học, lập trình viên.' },
-          { letter: 'A', name: 'Artistic — Nghệ thuật', desc: 'Thích sáng tạo, tự do, nghệ thuật. Nghề: thiết kế, âm nhạc, viết lách, đạo diễn.' },
-          { letter: 'S', name: 'Social — Xã hội', desc: 'Thích giúp đỡ, dạy dỗ, chăm sóc người khác. Nghề: giáo viên, bác sĩ, tư vấn viên.' },
-          { letter: 'E', name: 'Enterprising — Lãnh đạo', desc: 'Thích thuyết phục, kinh doanh, lãnh đạo. Nghề: CEO, sales, luật sư, chính trị gia.' },
-          { letter: 'C', name: 'Conventional — Hệ thống', desc: 'Thích quy trình, số liệu, tổ chức. Nghề: kế toán, ngân hàng, hành chính.' },
+          { letter: 'R', name: 'Realistic: Thực tế', desc: 'Thích làm việc với tay, máy móc, thiên nhiên. Nghề: kỹ sư, kiến trúc sư, thợ điện.' },
+          { letter: 'I', name: 'Investigative: Nghiên cứu', desc: 'Thích phân tích, khoa học, giải quyết vấn đề. Nghề: bác sĩ, nhà khoa học, lập trình viên.' },
+          { letter: 'A', name: 'Artistic: Nghệ thuật', desc: 'Thích sáng tạo, tự do, nghệ thuật. Nghề: thiết kế, âm nhạc, viết lách, đạo diễn.' },
+          { letter: 'S', name: 'Social: Xã hội', desc: 'Thích giúp đỡ, dạy dỗ, chăm sóc người khác. Nghề: giáo viên, bác sĩ, tư vấn viên.' },
+          { letter: 'E', name: 'Enterprising: Lãnh đạo', desc: 'Thích thuyết phục, kinh doanh, lãnh đạo. Nghề: CEO, sales, luật sư, chính trị gia.' },
+          { letter: 'C', name: 'Conventional: Hệ thống', desc: 'Thích quy trình, số liệu, tổ chức. Nghề: kế toán, ngân hàng, hành chính.' },
         ],
-        tips: ['Trả lời theo cảm giác tự nhiên của bạn', 'Không có câu trả lời đúng hay sai', 'Chọn mức độ bạn thích làm hoạt động đó — dù chưa từng thử'],
+        tips: ['Trả lời theo cảm giác tự nhiên của bạn', 'Không có câu trả lời đúng hay sai', 'Chọn mức độ bạn thích làm hoạt động đó, dù chưa từng thử'],
         questions: 29,
       },
       // After RIASEC (index 1 completed) → intro for Competency (section 2)
@@ -569,7 +569,7 @@ export default function QuizPage() {
         sectionSub: 'Learning Profile',
         goal: 'Đánh giá năng lực học tập và bối cảnh cá nhân để đề xuất lộ trình phù hợp nhất với bạn.',
         structure: [
-          { letter: 'EN', name: 'Tiếng Anh', desc: 'Đánh giá trình độ và thái độ với tiếng Anh — yếu tố quan trọng cho nhiều ngành.' },
+          { letter: 'EN', name: 'Tiếng Anh', desc: 'Đánh giá trình độ và thái độ với tiếng Anh, yếu tố quan trọng cho nhiều ngành.' },
           { letter: 'SL', name: 'Tự học', desc: 'Khả năng chủ động học tập và nghiên cứu độc lập ngoài trường lớp.' },
           { letter: 'SS', name: 'Kỹ năng mềm', desc: 'Khả năng làm việc nhóm, giao tiếp, xử lý tình huống thực tế.' },
         ],
