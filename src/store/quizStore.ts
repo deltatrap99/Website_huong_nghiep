@@ -28,6 +28,7 @@ interface QuizState {
   leadData: LeadFormData | null;
   showLeadForm: boolean;
   sectionBreak: boolean;
+  sectionIntro: boolean;
   isSubmitting: boolean;
   quizStartedAt: number | null;
 
@@ -36,6 +37,7 @@ interface QuizState {
   answerQuestion: (questionId: number, optionId: string) => void;
   goBack: () => void;
   continueSectionBreak: () => void;
+  continueSectionIntro: () => void;
   submitLeadForm: (data: LeadFormData) => Promise<void>;
   calculateResult: () => void;
   reset: () => void;
@@ -53,6 +55,7 @@ export const useQuizStore = create<QuizState>()(
       leadData: null,
       showLeadForm: false,
       sectionBreak: false,
+      sectionIntro: false,
       isSubmitting: false,
       quizStartedAt: null,
 
@@ -71,9 +74,12 @@ export const useQuizStore = create<QuizState>()(
           leadData: null,
           showLeadForm: false,
           sectionBreak: false,
+          sectionIntro: true,  // Show MBTI intro first
           isSubmitting: false,
           quizStartedAt: Date.now(),
         }),
+
+      continueSectionIntro: () => set({ sectionIntro: false }),
 
       answerQuestion: (questionId: number, optionId: string) => {
         const { answers, currentQuestion, quizMode } = get();
@@ -179,6 +185,7 @@ export const useQuizStore = create<QuizState>()(
           leadData: null,
           showLeadForm: false,
           sectionBreak: false,
+          sectionIntro: false,
           isSubmitting: false,
           quizStartedAt: null,
         }),

@@ -168,11 +168,13 @@ export default function QuizPage() {
     direction,
     showLeadForm,
     sectionBreak,
+    sectionIntro,
     quizMode,
     result,
     startQuiz,
     answerQuestion,
     continueSectionBreak,
+    continueSectionIntro,
     getQuestions,
     goBack,
   } = useQuizStore();
@@ -377,98 +379,264 @@ export default function QuizPage() {
   /* ── Lead form ─────────────────── */
   if (showLeadForm) return <LeadCaptureForm />;
 
-  /* ── Section Break Screen ─────────────────── */
-  if (sectionBreak) {
-    const completedSectionIndex = currentQuestion < 30 ? 0 : currentQuestion < 59 ? 1 : 2;
-    const nextSectionIndex = completedSectionIndex + 1;
-    const completedSection = quizSections[completedSectionIndex];
-    const nextSection = quizSections[nextSectionIndex];
-
+  /* ── MBTI Section Intro Screen ─────────────────── */
+  if (sectionIntro) {
     return (
-      <div className="min-h-screen gradient-quiz-bg flex items-center justify-center p-4">
+      <div className="min-h-screen gradient-quiz-bg flex items-center justify-center p-4 py-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-w-[600px]"
+          className="w-full max-w-[640px]"
         >
           {/* Progress dots */}
           <div className="flex items-center justify-center gap-3 mb-8">
-            {quizSections.map((_, i) => (
+            {[0, 1, 2].map((i) => (
               <div key={i} className="flex items-center gap-3">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
-                    i <= completedSectionIndex
-                      ? 'bg-ge-green text-white shadow-lg'
-                      : 'bg-white/60 text-ge-gray-400 border-2 border-ge-gray-200'
-                  }`}
-                >
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 ${
+                  i === 0 ? 'border-purple-400 bg-purple-50 text-purple-600' : 'bg-white/60 text-ge-gray-400 border-ge-gray-200'
+                }`}>{i + 1}</div>
+                {i < 2 && <div className="w-12 h-0.5 bg-ge-gray-200" />}
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-white rounded-3xl shadow-card-xl overflow-hidden mb-5">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white">
+              <div className="flex items-start justify-between">
+                <div>
+                  <span className="text-white/70 text-xs font-bold uppercase tracking-widest block mb-1">Phần 1 / 3</span>
+                  <h2 className="font-heading font-extrabold text-2xl md:text-3xl mb-1">MBTI-Lite</h2>
+                  <p className="text-white/80 text-sm">Personality Assessment</p>
+                </div>
+                <span className="text-5xl">🧠</span>
+              </div>
+            </div>
+
+            <div className="p-6 md:p-8">
+              {/* Goal */}
+              <div className="bg-purple-50 border border-purple-200 rounded-2xl p-4 mb-6">
+                <p className="text-purple-700 font-semibold text-sm mb-1">🎯 Mục tiêu phần này</p>
+                <p className="text-ge-gray-700 text-sm leading-relaxed">
+                  Khám phá phong cách tư duy và ra quyết định của bạn. Kết quả giúp xác định nhóm tính cách cốt lõi để kết hợp với RIASEC sau.
+                </p>
+              </div>
+
+              {/* MBTI 4 dimensions */}
+              <h3 className="font-heading font-bold text-ge-gray-900 mb-3 text-base">📋 MBTI phân loại theo 4 chiều</h3>
+              <div className="space-y-2.5 mb-6">
+                {[
+                  { letters: 'E / I', name: 'Hướng ngoại / Hướng nội', desc: 'Bạn nạp năng lượng từ việc giao tiếp với người khác (E) hay từ thời gian một mình (I)?' },
+                  { letters: 'S / N', name: 'Giác quan / Trực giác', desc: 'Bạn tin vào dữ liệu thực tế (S) hay các ý tưởng & khả năng trừu tượng (N)?' },
+                  { letters: 'T / F', name: 'Lý trí / Cảm xúc', desc: 'Bạn ra quyết định theo logic & phân tích (T) hay theo cảm xúc & giá trị (F)?' },
+                  { letters: 'J / P', name: 'Nguyên tắc / Linh hoạt', desc: 'Bạn thích lên kế hoạch rõ ràng (J) hay linh hoạt, ứng biến (P)?' },
+                ].map((dim) => (
+                  <div key={dim.letters} className="flex gap-3">
+                    <div className="shrink-0 w-14 h-9 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center">
+                      <span className="text-white font-extrabold text-xs">{dim.letters}</span>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-ge-gray-900 text-sm">{dim.name}</p>
+                      <p className="text-ge-gray-500 text-xs leading-relaxed">{dim.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* 16 types note */}
+              <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-4 mb-6">
+                <p className="text-indigo-700 font-semibold text-sm mb-1">💡 16 nhóm tính cách</p>
+                <p className="text-ge-gray-600 text-xs leading-relaxed">
+                  Kết hợp 4 chiều tạo ra 16 nhóm tính cách (INTJ, ENFP, ISTJ...). Phiên bản rút gọn của chúng tôi tập trung vào 3 chiều quan trọng nhất cho hướng nghiệp: E/I, T/F và cách bạn tiếp cận học tập.
+                </p>
+              </div>
+
+              {/* Tips */}
+              <div className="bg-ge-gray-50 rounded-2xl p-4 mb-6">
+                <p className="font-semibold text-ge-gray-700 text-sm mb-2.5">💡 Hướng dẫn trả lời</p>
+                <ul className="space-y-1.5">
+                  {[
+                    'Chọn câu trả lời phản ánh con người thật của bạn, không phải người bạn muốn trở thành',
+                    'Trả lời theo bản năng — câu đầu tiên nảy ra thường là chính xác nhất',
+                    'Không có câu trả lời đúng hay sai — mọi tính cách đều có giá trị',
+                  ].map((tip, i) => (
+                    <li key={i} className="flex gap-2 text-sm text-ge-gray-600">
+                      <span className="text-purple-500 font-bold shrink-0">✓</span>
+                      {tip}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* CTA */}
+              <button
+                onClick={continueSectionIntro}
+                className="group w-full inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+              >
+                Bắt đầu Phần 1 (30 câu)
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </div>
+
+          <p className="text-center text-ge-gray-400 text-sm">
+            🎯 {quizMode === 'quick' ? 'Quiz nhanh ~30 câu' : '88 câu • 3 phần • ~30 phút'} • Miễn phí 100%
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
+
+  /* ── Section Break Screen ─────────────────── */
+  if (sectionBreak) {
+    const completedSectionIndex = currentQuestion < 30 ? 0 : currentQuestion < 59 ? 1 : 2;
+    const nextSectionIndex = completedSectionIndex + 1;
+
+    const sectionIntros = [
+      // After MBTI (index 0 completed) → intro for RIASEC (section 1)
+      {
+        emoji: '🧭',
+        accentColor: 'from-blue-500 to-cyan-500',
+        bgAccent: 'bg-blue-50',
+        borderAccent: 'border-blue-200',
+        iconColor: 'text-blue-600',
+        sectionLabel: 'Phần 2 / 3',
+        sectionName: 'HOLLAND RIASEC',
+        sectionSub: 'Career Discovery',
+        goal: 'Xác định nhóm nghề nghiệp phù hợp với bạn dựa trên 6 nhóm tính cách nghề nghiệp quốc tế.',
+        structure: [
+          { letter: 'R', name: 'Realistic — Thực tế', desc: 'Thích làm việc với tay, máy móc, thiên nhiên. Nghề: kỹ sư, kiến trúc sư, thợ điện.' },
+          { letter: 'I', name: 'Investigative — Nghiên cứu', desc: 'Thích phân tích, khoa học, giải quyết vấn đề. Nghề: bác sĩ, nhà khoa học, lập trình viên.' },
+          { letter: 'A', name: 'Artistic — Nghệ thuật', desc: 'Thích sáng tạo, tự do, nghệ thuật. Nghề: thiết kế, âm nhạc, viết lách, đạo diễn.' },
+          { letter: 'S', name: 'Social — Xã hội', desc: 'Thích giúp đỡ, dạy dỗ, chăm sóc người khác. Nghề: giáo viên, bác sĩ, tư vấn viên.' },
+          { letter: 'E', name: 'Enterprising — Lãnh đạo', desc: 'Thích thuyết phục, kinh doanh, lãnh đạo. Nghề: CEO, sales, luật sư, chính trị gia.' },
+          { letter: 'C', name: 'Conventional — Hệ thống', desc: 'Thích quy trình, số liệu, tổ chức. Nghề: kế toán, ngân hàng, hành chính.' },
+        ],
+        tips: ['Trả lời theo cảm giác tự nhiên của bạn', 'Không có câu trả lời đúng hay sai', 'Chọn mức độ bạn thích làm hoạt động đó — dù chưa từng thử'],
+        questions: 29,
+      },
+      // After RIASEC (index 1 completed) → intro for Competency (section 2)
+      {
+        emoji: '📊',
+        accentColor: 'from-emerald-500 to-green-500',
+        bgAccent: 'bg-emerald-50',
+        borderAccent: 'border-emerald-200',
+        iconColor: 'text-emerald-600',
+        sectionLabel: 'Phần 3 / 3',
+        sectionName: 'Năng lực & Bối cảnh',
+        sectionSub: 'Learning Profile',
+        goal: 'Đánh giá năng lực học tập và bối cảnh cá nhân để đề xuất lộ trình phù hợp nhất với bạn.',
+        structure: [
+          { letter: 'EN', name: 'Tiếng Anh', desc: 'Đánh giá trình độ và thái độ với tiếng Anh — yếu tố quan trọng cho nhiều ngành.' },
+          { letter: 'SL', name: 'Tự học', desc: 'Khả năng chủ động học tập và nghiên cứu độc lập ngoài trường lớp.' },
+          { letter: 'SS', name: 'Kỹ năng mềm', desc: 'Khả năng làm việc nhóm, giao tiếp, xử lý tình huống thực tế.' },
+        ],
+        tips: ['Hãy tự đánh giá thật lòng về bản thân', 'Không có câu trả lời tốt hay xấu', 'Câu trả lời trung thực giúp đề xuất lộ trình chính xác hơn'],
+        questions: 29,
+      },
+    ];
+
+    const intro = sectionIntros[completedSectionIndex];
+    if (!intro) return null;
+
+    return (
+      <div className="min-h-screen gradient-quiz-bg flex items-center justify-center p-4 py-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-[640px]"
+        >
+          {/* Progress dots */}
+          <div className="flex items-center justify-center gap-3 mb-8">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
+                  i <= completedSectionIndex
+                    ? 'bg-ge-green text-white shadow-lg'
+                    : 'bg-white/60 text-ge-gray-400 border-2 border-ge-gray-200'
+                }`}>
                   {i <= completedSectionIndex ? '✓' : i + 1}
                 </div>
                 {i < 2 && (
-                  <div className={`w-12 h-0.5 ${
-                    i < completedSectionIndex ? 'bg-ge-green' : 'bg-ge-gray-200'
-                  }`} />
+                  <div className={`w-12 h-0.5 ${i < completedSectionIndex ? 'bg-ge-green' : 'bg-ge-gray-200'}`} />
                 )}
               </div>
             ))}
           </div>
 
-          {/* Completed section card */}
-          <div className="bg-white rounded-3xl shadow-card-xl p-8 md:p-10 text-center mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-ge-green/10 flex items-center justify-center mx-auto mb-5">
-              <span className="text-3xl">🎉</span>
-            </div>
-            <h2 className="font-heading font-extrabold text-2xl md:text-3xl text-ge-gray-900 mb-2">
-              Hoàn thành Phần {completedSectionIndex + 1}!
-            </h2>
-            <p className="text-ge-gray-500 text-lg mb-6">
-              {completedSection.title}
+          {/* Completed badge */}
+          <div className="bg-ge-green/10 border border-ge-green/20 rounded-2xl px-5 py-3 flex items-center gap-3 mb-4">
+            <span className="text-2xl">🎉</span>
+            <p className="text-ge-green font-semibold text-sm">
+              Hoàn thành Phần {completedSectionIndex + 1}! • {answers.length} câu đã trả lời
             </p>
-
-            {/* Stats */}
-            <div className="flex items-center justify-center gap-6 mb-8 text-sm">
-              <div className="flex items-center gap-1.5 text-ge-green">
-                <span className="font-bold">{completedSectionIndex + 1}/3</span>
-                <span className="text-ge-gray-500">phần hoàn thành</span>
-              </div>
-              <div className="flex items-center gap-1.5 text-ge-blue">
-                <span className="font-bold">{answers.length}/{88}</span>
-                <span className="text-ge-gray-500">câu đã trả lời</span>
-              </div>
-            </div>
-
-            {/* Next section preview */}
-            {nextSection && (
-              <div className={`${nextSection.bgColor} rounded-2xl p-5 text-left mb-6`}>
-                <div className="flex items-center gap-3 mb-2">
-                  <nextSection.icon size={20} className={nextSection.iconColor} />
-                  <span className="text-xs font-bold uppercase tracking-wider text-ge-gray-400">
-                    Phần {nextSectionIndex + 1} tiếp theo
-                  </span>
-                </div>
-                <h3 className="font-heading font-bold text-ge-navy text-lg mb-1">
-                  {nextSection.title}
-                </h3>
-                <p className="text-ge-gray-600 text-sm">
-                  {nextSection.questions} • {nextSection.description.slice(0, 80)}...
-                </p>
-              </div>
-            )}
-
-            {/* Continue button */}
-            <button
-              onClick={continueSectionBreak}
-              className="group inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full gradient-cta text-white font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 w-full sm:w-auto"
-            >
-              Tiếp tục Phần {nextSectionIndex + 1}
-              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-            </button>
           </div>
 
-          {/* Encouragement */}
+          {/* Main intro card */}
+          <div className="bg-white rounded-3xl shadow-card-xl overflow-hidden mb-5">
+            {/* Header */}
+            <div className={`bg-gradient-to-r ${intro.accentColor} p-6 text-white`}>
+              <div className="flex items-start justify-between">
+                <div>
+                  <span className="text-white/70 text-xs font-bold uppercase tracking-widest block mb-1">{intro.sectionLabel}</span>
+                  <h2 className="font-heading font-extrabold text-2xl md:text-3xl mb-1">{intro.sectionName}</h2>
+                  <p className="text-white/80 text-sm">{intro.sectionSub}</p>
+                </div>
+                <span className="text-5xl">{intro.emoji}</span>
+              </div>
+            </div>
+
+            <div className="p-6 md:p-8">
+              {/* Goal */}
+              <div className={`${intro.bgAccent} border ${intro.borderAccent} rounded-2xl p-4 mb-6`}>
+                <p className={`${intro.iconColor} font-semibold text-sm mb-1`}>🎯 Mục tiêu phần này</p>
+                <p className="text-ge-gray-700 text-sm leading-relaxed">{intro.goal}</p>
+              </div>
+
+              {/* Structure */}
+              <h3 className="font-heading font-bold text-ge-gray-900 mb-3 text-base">📋 Cấu trúc</h3>
+              <div className="space-y-2.5 mb-6">
+                {intro.structure.map((item) => (
+                  <div key={item.letter} className="flex gap-3">
+                    <div className={`shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br ${intro.accentColor} flex items-center justify-center`}>
+                      <span className="text-white font-extrabold text-sm">{item.letter}</span>
+                    </div>
+                    <div>
+                      <p className="font-semibold text-ge-gray-900 text-sm">{item.name}</p>
+                      <p className="text-ge-gray-500 text-xs leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Tips */}
+              <div className="bg-ge-gray-50 rounded-2xl p-4 mb-6">
+                <p className="font-semibold text-ge-gray-700 text-sm mb-2.5">💡 Hướng dẫn trả lời</p>
+                <ul className="space-y-1.5">
+                  {intro.tips.map((tip, i) => (
+                    <li key={i} className="flex gap-2 text-sm text-ge-gray-600">
+                      <span className="text-ge-green font-bold shrink-0">✓</span>
+                      {tip}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* CTA */}
+              <button
+                onClick={continueSectionBreak}
+                className="group w-full inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full gradient-cta text-white font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+              >
+                Bắt đầu Phần {nextSectionIndex + 1} ({intro.questions} câu)
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </div>
+
           <p className="text-center text-ge-gray-400 text-sm">
-            💪 Bạn đang làm rất tốt! Cố lên nhé!
+            💪 Bạn đang làm rất tốt! Còn {nextSectionIndex === 2 ? 1 : 2} phần nữa thôi!
           </p>
         </motion.div>
       </div>
