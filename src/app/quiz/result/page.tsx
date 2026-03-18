@@ -105,13 +105,14 @@ export default function ResultPage() {
   return (
     <div className="min-h-screen bg-ge-gray-50 pt-24 pb-32 md:pb-16">
       <div className="max-w-[800px] mx-auto px-4 md:px-6">
+        {/* Capture wrapper — everything inside this ref will be saved as image */}
+        <div ref={profileCardRef} className="space-y-6 bg-ge-gray-50 p-4 rounded-3xl">
         {/* Profile Card */}
         <motion.div
           {...fadeInUp}
           transition={{ duration: 0.6 }}
-          className="rounded-3xl overflow-hidden shadow-card-xl mb-8"
+          className="rounded-3xl overflow-hidden shadow-card-xl"
           style={{ background: archetype.gradient }}
-          ref={profileCardRef}
         >
           <div className="p-8 md:p-12 text-white">
             <div className="flex items-center gap-3 mb-2">
@@ -160,7 +161,7 @@ export default function ResultPage() {
         <motion.div
           {...fadeInUp}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-white rounded-3xl shadow-card p-6 md:p-8 mb-6"
+          className="bg-white rounded-3xl shadow-card p-6 md:p-8"
         >
           <h2 className="font-heading font-bold text-xl text-ge-gray-900 mb-6 flex items-center gap-2">
             <TrendingUp size={22} className="text-ge-blue" />
@@ -173,7 +174,7 @@ export default function ResultPage() {
         <motion.div
           {...fadeInUp}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
           {/* Strengths */}
           <div className="bg-white rounded-3xl shadow-card p-6 md:p-8">
@@ -224,7 +225,7 @@ export default function ResultPage() {
         <motion.div
           {...fadeInUp}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="bg-white rounded-3xl shadow-card p-6 md:p-8 mb-6"
+          className="bg-white rounded-3xl shadow-card p-6 md:p-8"
         >
           <h2 className="font-heading font-bold text-xl text-ge-gray-900 mb-6">
             🎯 Ngành nghề phù hợp
@@ -310,7 +311,7 @@ export default function ResultPage() {
         <motion.div
           {...fadeInUp}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="bg-white rounded-3xl shadow-card p-6 md:p-8 mb-8"
+          className="bg-white rounded-3xl shadow-card p-6 md:p-8"
         >
           <h2 className="font-heading font-bold text-xl text-ge-gray-900 mb-6">
             📊 Năng lực học tập
@@ -341,6 +342,7 @@ export default function ResultPage() {
             ))}
           </div>
         </motion.div>
+        </div>{/* end capture wrapper */}
 
         {/* CTA Block */}
         <motion.div
