@@ -652,6 +652,10 @@ export default function QuizPage() {
   const sectionEnd = isFullMode ? (sectionIndex === 0 ? 30 : sectionIndex === 1 ? 59 : 88) : totalQuestions;
   const sectionProgress = ((currentQuestion - sectionStart + 1) / (sectionEnd - sectionStart)) * 100;
   const overallProgress = ((currentQuestion + 1) / totalQuestions) * 100;
+  const sectionColors = ['from-purple-500 to-indigo-500', 'from-blue-500 to-cyan-500', 'from-emerald-500 to-green-500'];
+  const sectionBgColors = ['bg-purple-500', 'bg-blue-500', 'bg-emerald-500'];
+  const sectionTextColors = ['text-purple-600', 'text-blue-600', 'text-emerald-600'];
+  const sectionBadgeBg = ['bg-purple-50 border-purple-200', 'bg-blue-50 border-blue-200', 'bg-emerald-50 border-emerald-200'];
   const sectionLabels = ['Phần 1: MBTI-Lite', 'Phần 2: RIASEC', 'Phần 3: Năng lực'];
   const modeLabel = isFullMode ? sectionLabels[sectionIndex] : 'Quiz Nhanh';
 
@@ -665,20 +669,26 @@ export default function QuizPage() {
   return (
     <div className="min-h-screen gradient-quiz-bg flex flex-col">
       {/* Top bar */}
-      <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-ge-gray-200/50">
-        <div className="max-w-[680px] mx-auto px-4 py-3 flex items-center justify-between">
+      <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-ge-gray-200/50">
+        <div className="max-w-[680px] mx-auto px-4 py-2.5 flex items-center justify-between">
           <button
             onClick={goBack}
-            disabled={currentQuestion === 0}
+            disabled={currentQuestion === 0 || currentQuestion === sectionStart}
             className="p-2 rounded-lg text-ge-gray-600 hover:bg-ge-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             aria-label="Quay lại"
           >
             <ChevronRight size={20} className="rotate-180" />
           </button>
           <div className="text-center">
-            <span className="text-xs text-ge-gray-400 font-medium">{modeLabel}</span>
-            <span className="block text-sm text-ge-gray-600 font-semibold">
-              {isFullMode
+            {isFullMode ? (
+              <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full border ${sectionBadgeBg[sectionIndex]}`}>
+                <span className={`font-extrabold text-xs ${sectionTextColors[sectionIndex]}`}>{modeLabel}</span>
+              </div>
+            ) : (
+              <span className="text-xs text-ge-gray-400 font-medium">{modeLabel}</span>
+            )}
+            <span className="block text-sm text-ge-gray-600 font-semibold mt-0.5">
+              Câu {isFullMode
                 ? `${currentQuestion - sectionStart + 1} / ${sectionEnd - sectionStart}`
                 : `${currentQuestion + 1} / ${totalQuestions}`}
             </span>
@@ -690,23 +700,10 @@ export default function QuizPage() {
             ✕
           </button>
         </div>
-        {/* Section dots (full) or simple bar (quick) */}
-        {isFullMode && (
-          <div className="flex items-center justify-center gap-2 py-1">
-            {[0, 1, 2].map((i) => (
-              <div
-                key={i}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === sectionIndex ? 'w-8 bg-ge-blue' : i < sectionIndex ? 'w-4 bg-ge-green' : 'w-4 bg-ge-gray-200'
-                }`}
-              />
-            ))}
-          </div>
-        )}
-        {/* Progress bar */}
+        {/* Section progress bar - colored per section */}
         <div className="h-1.5 bg-ge-gray-100">
           <motion.div
-            className="h-full bg-gradient-to-r from-ge-blue to-ge-green rounded-r-full"
+            className={`h-full bg-gradient-to-r ${isFullMode ? sectionColors[sectionIndex] : 'from-ge-blue to-ge-green'} rounded-r-full`}
             animate={{ width: `${isFullMode ? sectionProgress : overallProgress}%` }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
           />
