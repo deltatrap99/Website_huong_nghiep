@@ -15,8 +15,10 @@ import {
   Users,
   Trophy,
   ArrowRight,
+  Zap,
+  BookOpen,
 } from 'lucide-react';
-import { useQuizStore } from '@/store/quizStore';
+import { useQuizStore, QuizMode } from '@/store/quizStore';
 import { analytics } from '@/lib/analytics';
 import LeadCaptureForm from '@/components/quiz/LeadCaptureForm';
 
@@ -158,6 +160,7 @@ export default function QuizPage() {
   const router = useRouter();
   const [showIntro, setShowIntro] = useState(true);
   const [showCountdown, setShowCountdown] = useState(false);
+  const [selectedMode, setSelectedMode] = useState<QuizMode>('quick');
   const [expandedSection, setExpandedSection] = useState<number | null>(null);
   const {
     currentQuestion,
@@ -165,18 +168,14 @@ export default function QuizPage() {
     direction,
     showLeadForm,
     sectionBreak,
+    quizMode,
     result,
     startQuiz,
     answerQuestion,
     continueSectionBreak,
+    getQuestions,
     goBack,
   } = useQuizStore();
-
-  // Import questions lazily
-  const [questions, setQuestions] = useState<typeof import('@/data/questions')['questions'] | null>(null);
-  useEffect(() => {
-    import('@/data/questions').then((mod) => setQuestions(mod.questions));
-  }, []);
 
   useEffect(() => {
     if (result) router.push('/quiz/result');
@@ -190,14 +189,14 @@ export default function QuizPage() {
   const handleCountdownComplete = useCallback(() => {
     setShowIntro(false);
     setShowCountdown(false);
-    startQuiz();
-  }, [startQuiz]);
+    startQuiz(selectedMode);
+  }, [startQuiz, selectedMode]);
 
   const handleSkipCountdown = useCallback(() => {
     setShowIntro(false);
     setShowCountdown(false);
-    startQuiz();
-  }, [startQuiz]);
+    startQuiz(selectedMode);
+  }, [startQuiz, selectedMode]);
 
   /* ── Intro Screen ─────────────────── */
   if (showIntro) {
@@ -213,7 +212,7 @@ export default function QuizPage() {
           >
             <div className="inline-flex items-center gap-2 bg-ge-blue/5 border border-ge-blue/10 rounded-full px-5 py-2 mb-6">
               <Clock size={16} className="text-ge-blue" />
-              <span className="text-ge-navy text-sm font-semibold">88 câu hỏi • ~15 phút • Miễn phí 100%</span>
+              <span className="text-ge-navy text-sm font-semibold">Miễn phí 100% • Chọn phiên bản phù hợp</span>
             </div>
             <h1 className="font-heading font-extrabold text-3xl md:text-4xl lg:text-5xl text-ge-gray-900 mb-4">
               Trắc nghiệm <span className="text-transparent bg-clip-text bg-gradient-to-r from-ge-blue to-ge-blue-light">Hướng nghiệp</span>
@@ -241,89 +240,82 @@ export default function QuizPage() {
             />
           </motion.div>
 
-          {/* Quiz sections breakdown */}
+          {/* Mode Selection */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="space-y-4 mb-10"
+            className="mb-10"
           >
             <h2 className="font-heading font-bold text-xl text-ge-gray-800 text-center mb-6">
-              Bài quiz gồm 3 phần
+              Chọn phiên bản quiz
             </h2>
-            {quizSections.map((section, i) => {
-              const isExpanded = expandedSection === i;
-              return (
-                <motion.div
-                  key={section.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.3 + i * 0.1 }}
-                  className="bg-white rounded-2xl border border-ge-gray-200/50 shadow-card overflow-hidden"
-                >
-                  <button
-                    onClick={() => setExpandedSection(isExpanded ? null : i)}
-                    className="w-full text-left p-5 md:p-6 flex items-center gap-4"
-                  >
-                    {/* Icon */}
-                    <div className={`w-12 h-12 rounded-xl ${section.bgColor} flex items-center justify-center shrink-0`}>
-                      <section.icon size={24} className={section.iconColor} />
-                    </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Quick Mode Card */}
+              <button
+                onClick={() => setSelectedMode('quick')}
+                className={`relative text-left p-6 rounded-2xl border-2 transition-all duration-200 ${
+                  selectedMode === 'quick'
+                    ? 'border-ge-orange bg-orange-50 ring-2 ring-orange-200 shadow-lg'
+                    : 'border-ge-gray-200 bg-white hover:border-ge-orange/50'
+                }`}
+              >
+                {selectedMode === 'quick' && (
+                  <div className="absolute -top-3 right-4 bg-ge-orange text-white text-xs font-bold px-3 py-1 rounded-full">
+                    Đang chọn
+                  </div>
+                )}
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-11 h-11 rounded-xl bg-orange-100 flex items-center justify-center">
+                    <Zap size={22} className="text-ge-orange" />
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-bold text-ge-navy text-lg">Nhanh</h3>
+                    <span className="text-xs text-ge-gray-500">~5 phút</span>
+                  </div>
+                </div>
+                <p className="text-ge-gray-600 text-sm leading-relaxed mb-3">
+                  30 câu hỏi chọn lọc, kết quả tổng quan nhanh chóng.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs bg-orange-100 text-ge-orange px-2.5 py-1 rounded-full font-medium">⚡ 30 câu</span>
+                  <span className="text-xs bg-orange-100 text-ge-orange px-2.5 py-1 rounded-full font-medium">🎯 Tổng quan</span>
+                </div>
+              </button>
 
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-xs font-bold uppercase tracking-wider text-ge-gray-400">
-                          Phần {i + 1}
-                        </span>
-                        <span className="text-xs bg-ge-gray-100 text-ge-gray-500 px-2 py-0.5 rounded-full">
-                          {section.questions}
-                        </span>
-                      </div>
-                      <h3 className="font-heading font-bold text-ge-navy text-lg leading-snug">
-                        {section.title}
-                      </h3>
-                    </div>
-
-                    {/* Chevron */}
-                    <ChevronRight
-                      size={20}
-                      className={`text-ge-gray-400 transition-transform duration-200 shrink-0 ${
-                        isExpanded ? 'rotate-90' : ''
-                      }`}
-                    />
-                  </button>
-
-                  <AnimatePresence>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="px-5 md:px-6 pb-5 md:pb-6">
-                          <div className="pl-16">
-                            <p className="text-ge-gray-600 text-sm leading-relaxed mb-3">
-                              {section.description}
-                            </p>
-                            <ul className="space-y-2">
-                              {section.items.map((item, idx) => (
-                                <li key={idx} className="flex items-start gap-2 text-sm text-ge-gray-700">
-                                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-ge-blue shrink-0" />
-                                  {item}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-              );
-            })}
+              {/* Full Mode Card */}
+              <button
+                onClick={() => setSelectedMode('full')}
+                className={`relative text-left p-6 rounded-2xl border-2 transition-all duration-200 ${
+                  selectedMode === 'full'
+                    ? 'border-ge-blue bg-blue-50 ring-2 ring-blue-200 shadow-lg'
+                    : 'border-ge-gray-200 bg-white hover:border-ge-blue/50'
+                }`}
+              >
+                {selectedMode === 'full' && (
+                  <div className="absolute -top-3 right-4 bg-ge-blue text-white text-xs font-bold px-3 py-1 rounded-full">
+                    Đang chọn
+                  </div>
+                )}
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center">
+                    <BookOpen size={22} className="text-ge-blue" />
+                  </div>
+                  <div>
+                    <h3 className="font-heading font-bold text-ge-navy text-lg">Đầy đủ</h3>
+                    <span className="text-xs text-ge-gray-500">~15 phút</span>
+                  </div>
+                </div>
+                <p className="text-ge-gray-600 text-sm leading-relaxed mb-3">
+                  88 câu hỏi chi tiết, kết quả phân tích chuyên sâu và chính xác nhất.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs bg-blue-100 text-ge-blue px-2.5 py-1 rounded-full font-medium">📋 88 câu</span>
+                  <span className="text-xs bg-blue-100 text-ge-blue px-2.5 py-1 rounded-full font-medium">🔬 Chuyên sâu</span>
+                  <span className="text-xs bg-blue-100 text-ge-blue px-2.5 py-1 rounded-full font-medium">⭐ Chính xác nhất</span>
+                </div>
+              </button>
+            </div>
           </motion.div>
 
           {/* Social proof */}
@@ -484,18 +476,26 @@ export default function QuizPage() {
   }
 
   /* ── Quiz Questions ─────────────────── */
-  if (!questions) return null;
-  const question = questions[currentQuestion];
+  const questionList = getQuestions();
+  if (!questionList.length) return null;
+  const question = questionList[currentQuestion];
   if (!question) return null;
 
-
+  const totalQuestions = questionList.length;
   const selectedAnswer = answers.find((a) => a.questionId === question.id);
-  const isMidpoint = currentQuestion === 44;
-  const sectionIndex = currentQuestion < 30 ? 0 : currentQuestion < 59 ? 1 : 2;
-  const sectionStart = sectionIndex === 0 ? 0 : sectionIndex === 1 ? 30 : 59;
-  const sectionEnd = sectionIndex === 0 ? 30 : sectionIndex === 1 ? 59 : 88;
+  const isMidpoint = currentQuestion === Math.floor(totalQuestions / 2);
+
+  // Section info (only meaningful for full mode)
+  const isFullMode = quizMode === 'full';
+  const sectionIndex = isFullMode
+    ? (currentQuestion < 30 ? 0 : currentQuestion < 59 ? 1 : 2)
+    : 0;
+  const sectionStart = isFullMode ? (sectionIndex === 0 ? 0 : sectionIndex === 1 ? 30 : 59) : 0;
+  const sectionEnd = isFullMode ? (sectionIndex === 0 ? 30 : sectionIndex === 1 ? 59 : 88) : totalQuestions;
   const sectionProgress = ((currentQuestion - sectionStart + 1) / (sectionEnd - sectionStart)) * 100;
+  const overallProgress = ((currentQuestion + 1) / totalQuestions) * 100;
   const sectionLabels = ['Phần 1: MBTI-Lite', 'Phần 2: RIASEC', 'Phần 3: Năng lực'];
+  const modeLabel = isFullMode ? sectionLabels[sectionIndex] : 'Quiz Nhanh';
 
   const handleAnswer = (optionId: string) => {
     if (!question) return;
@@ -518,9 +518,11 @@ export default function QuizPage() {
             <ChevronRight size={20} className="rotate-180" />
           </button>
           <div className="text-center">
-            <span className="text-xs text-ge-gray-400 font-medium">{sectionLabels[sectionIndex]}</span>
+            <span className="text-xs text-ge-gray-400 font-medium">{modeLabel}</span>
             <span className="block text-sm text-ge-gray-600 font-semibold">
-              {currentQuestion - sectionStart + 1} / {sectionEnd - sectionStart}
+              {isFullMode
+                ? `${currentQuestion - sectionStart + 1} / ${sectionEnd - sectionStart}`
+                : `${currentQuestion + 1} / ${totalQuestions}`}
             </span>
           </div>
           <button
@@ -530,22 +532,24 @@ export default function QuizPage() {
             ✕
           </button>
         </div>
-        {/* Section dots */}
-        <div className="flex items-center justify-center gap-2 py-1">
-          {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              className={`h-1.5 rounded-full transition-all ${
-                i === sectionIndex ? 'w-8 bg-ge-blue' : i < sectionIndex ? 'w-4 bg-ge-green' : 'w-4 bg-ge-gray-200'
-              }`}
-            />
-          ))}
-        </div>
-        {/* Progress bar within section */}
+        {/* Section dots (full) or simple bar (quick) */}
+        {isFullMode && (
+          <div className="flex items-center justify-center gap-2 py-1">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className={`h-1.5 rounded-full transition-all ${
+                  i === sectionIndex ? 'w-8 bg-ge-blue' : i < sectionIndex ? 'w-4 bg-ge-green' : 'w-4 bg-ge-gray-200'
+                }`}
+              />
+            ))}
+          </div>
+        )}
+        {/* Progress bar */}
         <div className="h-1.5 bg-ge-gray-100">
           <motion.div
             className="h-full bg-gradient-to-r from-ge-blue to-ge-green rounded-r-full"
-            animate={{ width: `${sectionProgress}%` }}
+            animate={{ width: `${isFullMode ? sectionProgress : overallProgress}%` }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
           />
         </div>

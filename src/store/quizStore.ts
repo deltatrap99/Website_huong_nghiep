@@ -2,13 +2,25 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { QuizAnswer, QuizResult, LeadFormData } from '@/types/quiz';
 import { generateResult } from '@/lib/scoring';
-import { questions } from '@/data/questions';
+import { questions as allQuestions } from '@/data/questions';
+import { QUICK_QUESTION_IDS } from '@/data/quickQuestionIds';
 
-// Section break boundaries: after Q30 (index 29) and Q59 (index 58)
-const SECTION_BREAKS = [29, 58];
+export type QuizMode = 'quick' | 'full';
+
+// Get the filtered question list based on mode
+function getQuestionList(mode: QuizMode) {
+  if (mode === 'quick') {
+    return allQuestions.filter((q) => QUICK_QUESTION_IDS.includes(q.id));
+  }
+  return allQuestions;
+}
+
+// Section break indices for full mode (after Q30=index 29, Q59=index 58)
+const FULL_SECTION_BREAKS = [29, 58];
 
 interface QuizState {
   // State
+  quizMode: QuizMode | null;
   currentQuestion: number;
   answers: QuizAnswer[];
   direction: number;
@@ -19,18 +31,20 @@ interface QuizState {
   quizStartedAt: number | null;
 
   // Actions
-  startQuiz: () => void;
+  startQuiz: (mode: QuizMode) => void;
   answerQuestion: (questionId: number, optionId: string) => void;
   goBack: () => void;
   continueSectionBreak: () => void;
   submitLeadForm: (data: LeadFormData) => void;
   calculateResult: () => void;
   reset: () => void;
+  getQuestions: () => typeof allQuestions;
 }
 
 export const useQuizStore = create<QuizState>()(
   persist(
     (set, get) => ({
+      quizMode: null,
       currentQuestion: 0,
       answers: [],
       direction: 1,
@@ -40,8 +54,14 @@ export const useQuizStore = create<QuizState>()(
       sectionBreak: false,
       quizStartedAt: null,
 
-      startQuiz: () =>
+      getQuestions: () => {
+        const { quizMode } = get();
+        return getQuestionList(quizMode ?? 'full');
+      },
+
+      startQuiz: (mode: QuizMode) =>
         set({
+          quizMode: mode,
           currentQuestion: 0,
           answers: [],
           direction: 1,
@@ -53,19 +73,20 @@ export const useQuizStore = create<QuizState>()(
         }),
 
       answerQuestion: (questionId: number, optionId: string) => {
-        const { answers, currentQuestion } = get();
+        const { answers, currentQuestion, quizMode } = get();
+        const questionList = getQuestionList(quizMode ?? 'full');
         const newAnswers = answers.filter((a) => a.questionId !== questionId);
         newAnswers.push({ questionId, optionId });
 
-        if (currentQuestion >= questions.length - 1) {
+        if (currentQuestion >= questionList.length - 1) {
           // Last question answered — show lead form
           set({
             answers: newAnswers,
             showLeadForm: true,
             direction: 1,
           });
-        } else if (SECTION_BREAKS.includes(currentQuestion)) {
-          // End of section — show section break screen
+        } else if (quizMode === 'full' && FULL_SECTION_BREAKS.includes(currentQuestion)) {
+          // End of section (full mode only) — show section break screen
           set({
             answers: newAnswers,
             sectionBreak: true,
@@ -112,6 +133,7 @@ export const useQuizStore = create<QuizState>()(
 
       reset: () =>
         set({
+          quizMode: null,
           currentQuestion: 0,
           answers: [],
           direction: 1,
@@ -125,6 +147,7 @@ export const useQuizStore = create<QuizState>()(
     {
       name: 'huong-nghiep-quiz',
       partialize: (state) => ({
+        quizMode: state.quizMode,
         currentQuestion: state.currentQuestion,
         answers: state.answers,
         quizStartedAt: state.quizStartedAt,
