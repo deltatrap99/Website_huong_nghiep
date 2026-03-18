@@ -7,7 +7,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       'Khám phá những ngành nghề đang "hot" và có tiềm năng phát triển mạnh trong tương lai gần, giúp bạn định hướng đúng đắn.',
     category: 'Xu hướng ngành nghề',
-    image: '/images/blog/top-careers.jpg',
+    image: '/images/blog/top-careers.png',
     date: '2026-03-15',
     readTime: 5,
     featured: true,
@@ -18,7 +18,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       'Không chỉ kiến thức chuyên môn, kỹ năng mềm đóng vai trò then chốt giúp bạn thành công trong công việc.',
     category: 'Kỹ năng',
-    image: '/images/blog/soft-skills.jpg',
+    image: '/images/blog/soft-skills.png',
     date: '2026-03-10',
     readTime: 4,
   },
@@ -28,7 +28,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       'Tìm hiểu framework RIASEC/Holland Code - công cụ hướng nghiệp được hàng triệu người sử dụng trên thế giới.',
     category: 'Hướng nghiệp theo ngành',
-    image: '/images/blog/riasec.jpg',
+    image: '/images/blog/riasec.png',
     date: '2026-03-05',
     readTime: 6,
     featured: true,
@@ -39,7 +39,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       'Phân tích ưu nhược điểm của cả hai con đường, giúp bạn đưa ra quyết định phù hợp với hoàn cảnh.',
     category: 'Định hướng học tập',
-    image: '/images/blog/study-abroad.jpg',
+    image: '/images/blog/study-abroad.png',
     date: '2026-02-28',
     readTime: 7,
   },
@@ -49,7 +49,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       'Hành trình hướng nghiệp của Minh Anh, từ một học sinh lớp 11 mông lung đến khi tìm được đam mê thật sự.',
     category: 'Câu chuyện thật',
-    image: '/images/blog/student-story.jpg',
+    image: '/images/blog/student-story.png',
     date: '2026-02-20',
     readTime: 5,
   },
@@ -59,7 +59,7 @@ export const blogPosts: BlogPost[] = [
     excerpt:
       'Bạn muốn bắt đầu học lập trình nhưng chưa biết bắt đầu từ đâu? Đây là lộ trình chi tiết dành cho bạn.',
     category: 'Hướng nghiệp theo ngành',
-    image: '/images/blog/learn-coding.jpg',
+    image: '/images/blog/learn-coding.png',
     date: '2026-02-15',
     readTime: 6,
   },

@@ -88,8 +88,12 @@ export default function BlogPage() {
                       className="group block bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300 border border-ge-gray-200/50 mb-6"
                     >
                       <div className="md:flex">
-                        <div className="md:w-2/5 aspect-[4/3] md:aspect-auto bg-gradient-to-br from-ge-blue/10 to-ge-blue-light/10 flex items-center justify-center">
-                          <span className="text-6xl">📚</span>
+                        <div className="md:w-2/5 aspect-[4/3] md:aspect-auto bg-gradient-to-br from-ge-blue/10 to-ge-blue-light/10 overflow-hidden">
+                          <img
+                            src={post.image}
+                            alt={post.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          />
                         </div>
                         <div className="p-6 md:p-8 flex-1">
                           <span className="inline-block bg-ge-orange/10 text-ge-orange text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full mb-3">
@@ -128,14 +132,12 @@ export default function BlogPage() {
                     href={`/blog/${post.slug}`}
                     className="group block bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 border border-ge-gray-200/50 h-full"
                   >
-                    <div className="aspect-[4/3] bg-gradient-to-br from-ge-blue/5 to-ge-blue-light/5 flex items-center justify-center">
-                      <span className="text-5xl">
-                        {post.category === 'Kỹ năng'
-                          ? '💪'
-                          : post.category === 'Câu chuyện thật'
-                          ? '💡'
-                          : '🎯'}
-                      </span>
+                    <div className="aspect-[4/3] bg-gradient-to-br from-ge-blue/5 to-ge-blue-light/5 overflow-hidden">
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
                     <div className="p-5">
                       <span className="text-ge-blue text-xs font-semibold uppercase tracking-wide">

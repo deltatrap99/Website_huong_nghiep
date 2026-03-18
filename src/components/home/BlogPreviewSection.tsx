@@ -47,11 +47,13 @@ export default function BlogPreviewSection() {
                 href={`/blog/${post.slug}`}
                 className="group block bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-all duration-300 border border-ge-gray-200/50 h-full"
               >
-                {/* Image placeholder */}
-                <div className="aspect-[4/3] bg-gradient-to-br from-ge-blue/10 to-ge-blue-light/10 flex items-center justify-center">
-                  <span className="text-5xl">
-                    {post.slug.includes('nganh') ? '🎯' : post.slug.includes('ky-nang') ? '💪' : '📚'}
-                  </span>
+                {/* Blog image */}
+                <div className="aspect-[4/3] bg-gradient-to-br from-ge-blue/10 to-ge-blue-light/10 overflow-hidden">
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
                 </div>
                 <div className="p-5 md:p-6">
                   <span className="text-ge-blue text-xs font-semibold uppercase tracking-wide">

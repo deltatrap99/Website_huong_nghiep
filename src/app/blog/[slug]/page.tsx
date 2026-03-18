@@ -68,8 +68,12 @@ export default function BlogDetailPage({ params }: { params: Promise<{ slug: str
           </h1>
 
           {/* Featured image area */}
-          <div className="aspect-[16/9] bg-gradient-to-br from-ge-blue/10 to-ge-blue-light/10 rounded-2xl flex items-center justify-center mb-8">
-            <span className="text-7xl">📚</span>
+          <div className="aspect-[16/9] bg-gradient-to-br from-ge-blue/10 to-ge-blue-light/10 rounded-2xl overflow-hidden mb-8">
+            <img
+              src={post.image}
+              alt={post.title}
+              className="w-full h-full object-cover"
+            />
           </div>
 
           {/* Content */}
