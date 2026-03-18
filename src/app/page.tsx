@@ -1,5 +1,6 @@
 import HeroSection from '@/components/home/HeroSection';
 import WhySection from '@/components/home/WhySection';
+import MethodologySection from '@/components/home/MethodologySection';
 import PreviewSection from '@/components/home/PreviewSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import BlogPreviewSection from '@/components/home/BlogPreviewSection';
@@ -10,6 +11,7 @@ export default function HomePage() {
     <>
       <HeroSection />
       <WhySection />
+      <MethodologySection />
       <PreviewSection />
       <TestimonialsSection />
       <BlogPreviewSection />
