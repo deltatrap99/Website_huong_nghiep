@@ -160,7 +160,7 @@ export default function QuizPage() {
   const router = useRouter();
   const [showIntro, setShowIntro] = useState(true);
   const [showCountdown, setShowCountdown] = useState(false);
-  const [selectedMode, setSelectedMode] = useState<QuizMode>('quick');
+  const [selectedMode, setSelectedMode] = useState<QuizMode>('full');
   const [expandedSection, setExpandedSection] = useState<number | null>(null);
   const {
     currentQuestion,
