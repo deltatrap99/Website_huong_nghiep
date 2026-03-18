@@ -92,6 +92,76 @@ export default function ResultPage() {
     }
   }, [archetype.code]);
 
+  const [pdfLoading, setPdfLoading] = useState(false);
+
+  const handleDownloadPDF = useCallback(async () => {
+    if (!profileCardRef.current) return;
+    setPdfLoading(true);
+    try {
+      const html2canvas = (await import('html2canvas-pro')).default;
+      const { jsPDF } = await import('jspdf');
+
+      const canvas = await html2canvas(profileCardRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#F7F8FA',
+        windowWidth: 800,
+      });
+
+      const imgData = canvas.toDataURL('image/jpeg', 0.92);
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+
+      // A4 dimensions in mm
+      const pdfWidth = 210;
+      const pdfHeight = 297;
+      const margin = 10;
+      const contentWidth = pdfWidth - margin * 2;
+      const contentHeight = (imgHeight * contentWidth) / imgWidth;
+
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      // If the content is taller than one page, split across multiple pages
+      let yOffset = 0;
+      let pageHeight = pdfHeight - margin * 2;
+
+      if (contentHeight <= pageHeight) {
+        pdf.addImage(imgData, 'JPEG', margin, margin, contentWidth, contentHeight);
+      } else {
+        while (yOffset < contentHeight) {
+          if (yOffset > 0) pdf.addPage();
+          // Calculate source crop in canvas pixels
+          const srcY = (yOffset / contentWidth) * imgWidth;
+          const srcH = (pageHeight / contentWidth) * imgWidth;
+
+          // Create a cropped canvas for this page
+          const pageCanvas = document.createElement('canvas');
+          pageCanvas.width = imgWidth;
+          pageCanvas.height = Math.min(srcH, imgHeight - srcY);
+          const ctx = pageCanvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(canvas, 0, srcY, imgWidth, pageCanvas.height, 0, 0, imgWidth, pageCanvas.height);
+          }
+          const pageImgData = pageCanvas.toDataURL('image/jpeg', 0.92);
+          const drawHeight = (pageCanvas.height * contentWidth) / imgWidth;
+          pdf.addImage(pageImgData, 'JPEG', margin, margin, contentWidth, drawHeight);
+          yOffset += pageHeight;
+        }
+      }
+
+      // Footer on last page
+      pdf.setFontSize(8);
+      pdf.setTextColor(150);
+      pdf.text('Galaxy Education - huongnghiep.daisugiaoduc.vn', pdfWidth / 2, pdfHeight - 5, { align: 'center' });
+
+      pdf.save(`ket-qua-huong-nghiep-${archetype.code}.pdf`);
+    } catch (err) {
+      console.error('Failed to generate PDF:', err);
+    } finally {
+      setPdfLoading(false);
+    }
+  }, [archetype.code]);
+
   const handleNewQuiz = () => {
     reset();
     router.push('/quiz');
@@ -147,6 +217,13 @@ export default function ResultPage() {
                 className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-colors"
               >
                 <Download size={16} /> Lưu ảnh
+              </button>
+              <button
+                onClick={handleDownloadPDF}
+                disabled={pdfLoading}
+                className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-colors disabled:opacity-50"
+              >
+                <Download size={16} /> {pdfLoading ? 'Đang tạo...' : 'Tải PDF'}
               </button>
             </div>
           </div>
@@ -360,6 +437,14 @@ export default function ResultPage() {
               <MessageCircle size={18} />
               Đăng ký tư vấn miễn phí
             </Link>
+            <button
+              onClick={handleDownloadPDF}
+              disabled={pdfLoading}
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-ge-navy text-white font-semibold hover:bg-ge-navy/90 transition-all disabled:opacity-50"
+            >
+              <Download size={18} />
+              {pdfLoading ? 'Đang tạo PDF...' : 'Tải PDF kết quả'}
+            </button>
             <button
               onClick={handleNewQuiz}
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border-2 border-ge-blue text-ge-blue font-semibold hover:bg-ge-blue hover:text-white transition-all"
