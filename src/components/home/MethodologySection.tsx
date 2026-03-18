@@ -22,7 +22,7 @@ const riasecTypes = [
 
 export default function MethodologySection() {
   return (
-    <section className="py-20 md:py-28 bg-ge-gray-50 overflow-hidden">
+    <section className="py-20 md:py-28 bg-white overflow-hidden">
       <div className="max-w-[1280px] mx-auto px-4 md:px-6 lg:px-8">
 
         {/* Header */}

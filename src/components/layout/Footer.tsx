@@ -36,7 +36,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/ambassador" className="text-white/70 text-sm hover:text-white transition-colors">
-                  Kết nối Đại sứ
+                  Nhận tư vấn
                 </Link>
               </li>
             </ul>

@@ -112,7 +112,7 @@ export default function HeroSection() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-white/75 text-lg md:text-xl leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0"
             >
-              Trắc nghiệm hướng nghiệp dựa trên framework <span className="text-white font-semibold">HOLLAND RIASEC</span> quốc tế, giúp bạn tìm ra con đường sự nghiệp phù hợp nhất.
+              Trắc nghiệm hướng nghiệp kết hợp <span className="text-white font-semibold">MBTI-Lite</span> và <span className="text-white font-semibold">HOLLAND RIASEC</span> — giúp bạn tìm ra con đường sự nghiệp phù hợp nhất.
             </motion.p>
 
             {/* CTA Buttons */}

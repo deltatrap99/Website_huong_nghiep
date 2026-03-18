@@ -704,7 +704,6 @@ export default function QuizPage() {
   const sectionProgress = ((currentQuestion - sectionStart + 1) / (sectionEnd - sectionStart)) * 100;
   const overallProgress = ((currentQuestion + 1) / totalQuestions) * 100;
   const sectionColors = ['from-purple-500 to-indigo-500', 'from-blue-500 to-cyan-500', 'from-emerald-500 to-green-500'];
-  const sectionBgColors = ['bg-purple-500', 'bg-blue-500', 'bg-emerald-500'];
   const sectionTextColors = ['text-purple-600', 'text-blue-600', 'text-emerald-600'];
   const sectionBadgeBg = ['bg-purple-50 border-purple-200', 'bg-blue-50 border-blue-200', 'bg-emerald-50 border-emerald-200'];
   const sectionLabels = ['Phần 1: MBTI-Lite', 'Phần 2: RIASEC', 'Phần 3: Năng lực'];
