@@ -25,6 +25,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function LeadCaptureForm() {
   const submitLeadForm = useQuizStore((s) => s.submitLeadForm);
+  const storeSubmitting = useQuizStore((s) => s.isSubmitting);
 
   useEffect(() => {
     analytics.leadFormViewed();
@@ -38,7 +39,7 @@ export default function LeadCaptureForm() {
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     const utm = getStoredUTM();
     const leadData = {
       ...data,
@@ -46,11 +47,10 @@ export default function LeadCaptureForm() {
       ambassadorRef: utm.ref,
     };
 
-    // Log to console (replace with API call in production)
     console.log('[Lead Captured]', leadData);
     analytics.leadFormSubmitted('pending');
 
-    submitLeadForm(leadData);
+    await submitLeadForm(leadData);
   };
 
   return (
@@ -168,10 +168,10 @@ export default function LeadCaptureForm() {
           {/* Submit */}
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || storeSubmitting}
             className="w-full py-4 rounded-full gradient-cta text-white font-bold text-lg shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
-            {isSubmitting ? 'Đang xử lý...' : 'Xem kết quả của tôi 🎯'}
+            {(isSubmitting || storeSubmitting) ? 'Đang phân tích kết quả...' : 'Xem kết quả của tôi 🎯'}
           </button>
         </form>
 

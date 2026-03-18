@@ -28,6 +28,7 @@ interface QuizState {
   leadData: LeadFormData | null;
   showLeadForm: boolean;
   sectionBreak: boolean;
+  isSubmitting: boolean;
   quizStartedAt: number | null;
 
   // Actions
@@ -35,7 +36,7 @@ interface QuizState {
   answerQuestion: (questionId: number, optionId: string) => void;
   goBack: () => void;
   continueSectionBreak: () => void;
-  submitLeadForm: (data: LeadFormData) => void;
+  submitLeadForm: (data: LeadFormData) => Promise<void>;
   calculateResult: () => void;
   reset: () => void;
   getQuestions: () => typeof allQuestions;
@@ -52,6 +53,7 @@ export const useQuizStore = create<QuizState>()(
       leadData: null,
       showLeadForm: false,
       sectionBreak: false,
+      isSubmitting: false,
       quizStartedAt: null,
 
       getQuestions: () => {
@@ -69,6 +71,7 @@ export const useQuizStore = create<QuizState>()(
           leadData: null,
           showLeadForm: false,
           sectionBreak: false,
+          isSubmitting: false,
           quizStartedAt: Date.now(),
         }),
 
@@ -120,9 +123,44 @@ export const useQuizStore = create<QuizState>()(
         }
       },
 
-      submitLeadForm: (data: LeadFormData) => {
-        set({ leadData: data });
-        get().calculateResult();
+      submitLeadForm: async (data: LeadFormData) => {
+        set({ leadData: data, isSubmitting: true });
+
+        const { answers, quizMode } = get();
+
+        // Try server-side scoring via API
+        try {
+          // Retrieve UTM from localStorage
+          let utm = {};
+          if (typeof window !== 'undefined') {
+            try {
+              utm = JSON.parse(localStorage.getItem('huong_nghiep_utm') || '{}');
+            } catch { /* ignore */ }
+          }
+
+          const res = await fetch('/api/quiz/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              answers,
+              mode: quizMode || 'full',
+              leadData: data,
+              utm,
+            }),
+          });
+
+          if (res.ok) {
+            const { result } = await res.json();
+            set({ result, isSubmitting: false });
+            return;
+          }
+        } catch (err) {
+          console.warn('[Quiz] API failed, falling back to client scoring:', err);
+        }
+
+        // Fallback: client-side scoring
+        const result = generateResult(answers);
+        set({ result, isSubmitting: false });
       },
 
       calculateResult: () => {
@@ -141,6 +179,7 @@ export const useQuizStore = create<QuizState>()(
           leadData: null,
           showLeadForm: false,
           sectionBreak: false,
+          isSubmitting: false,
           quizStartedAt: null,
         }),
     }),
