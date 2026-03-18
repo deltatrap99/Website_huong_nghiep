@@ -10,7 +10,7 @@ import { useAuthStore } from '@/store/authStore';
 const navLinks = [
   { href: '/', label: 'Trang chủ' },
   { href: '/blog', label: 'Blog' },
-  { href: '/ambassador', label: 'Đại sứ' },
+  { href: '/ambassador', label: 'Nhận tư vấn' },
   { href: '/account', label: 'Tài khoản' },
 ];
 
