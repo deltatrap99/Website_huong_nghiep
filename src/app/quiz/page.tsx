@@ -164,9 +164,11 @@ export default function QuizPage() {
     answers,
     direction,
     showLeadForm,
+    sectionBreak,
     result,
     startQuiz,
     answerQuestion,
+    continueSectionBreak,
     goBack,
   } = useQuizStore();
 
@@ -383,16 +385,117 @@ export default function QuizPage() {
   /* ── Lead form ─────────────────── */
   if (showLeadForm) return <LeadCaptureForm />;
 
+  /* ── Section Break Screen ─────────────────── */
+  if (sectionBreak) {
+    const completedSectionIndex = currentQuestion < 30 ? 0 : currentQuestion < 59 ? 1 : 2;
+    const nextSectionIndex = completedSectionIndex + 1;
+    const completedSection = quizSections[completedSectionIndex];
+    const nextSection = quizSections[nextSectionIndex];
+
+    return (
+      <div className="min-h-screen gradient-quiz-bg flex items-center justify-center p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-[600px]"
+        >
+          {/* Progress dots */}
+          <div className="flex items-center justify-center gap-3 mb-8">
+            {quizSections.map((_, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <div
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all ${
+                    i <= completedSectionIndex
+                      ? 'bg-ge-green text-white shadow-lg'
+                      : 'bg-white/60 text-ge-gray-400 border-2 border-ge-gray-200'
+                  }`}
+                >
+                  {i <= completedSectionIndex ? '✓' : i + 1}
+                </div>
+                {i < 2 && (
+                  <div className={`w-12 h-0.5 ${
+                    i < completedSectionIndex ? 'bg-ge-green' : 'bg-ge-gray-200'
+                  }`} />
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Completed section card */}
+          <div className="bg-white rounded-3xl shadow-card-xl p-8 md:p-10 text-center mb-6">
+            <div className="w-16 h-16 rounded-2xl bg-ge-green/10 flex items-center justify-center mx-auto mb-5">
+              <span className="text-3xl">🎉</span>
+            </div>
+            <h2 className="font-heading font-extrabold text-2xl md:text-3xl text-ge-gray-900 mb-2">
+              Hoàn thành Phần {completedSectionIndex + 1}!
+            </h2>
+            <p className="text-ge-gray-500 text-lg mb-6">
+              {completedSection.title}
+            </p>
+
+            {/* Stats */}
+            <div className="flex items-center justify-center gap-6 mb-8 text-sm">
+              <div className="flex items-center gap-1.5 text-ge-green">
+                <span className="font-bold">{completedSectionIndex + 1}/3</span>
+                <span className="text-ge-gray-500">phần hoàn thành</span>
+              </div>
+              <div className="flex items-center gap-1.5 text-ge-blue">
+                <span className="font-bold">{answers.length}/{88}</span>
+                <span className="text-ge-gray-500">câu đã trả lời</span>
+              </div>
+            </div>
+
+            {/* Next section preview */}
+            {nextSection && (
+              <div className={`${nextSection.bgColor} rounded-2xl p-5 text-left mb-6`}>
+                <div className="flex items-center gap-3 mb-2">
+                  <nextSection.icon size={20} className={nextSection.iconColor} />
+                  <span className="text-xs font-bold uppercase tracking-wider text-ge-gray-400">
+                    Phần {nextSectionIndex + 1} tiếp theo
+                  </span>
+                </div>
+                <h3 className="font-heading font-bold text-ge-navy text-lg mb-1">
+                  {nextSection.title}
+                </h3>
+                <p className="text-ge-gray-600 text-sm">
+                  {nextSection.questions} • {nextSection.description.slice(0, 80)}...
+                </p>
+              </div>
+            )}
+
+            {/* Continue button */}
+            <button
+              onClick={continueSectionBreak}
+              className="group inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full gradient-cta text-white font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-[1.03] active:scale-[0.98] transition-all duration-300 w-full sm:w-auto"
+            >
+              Tiếp tục Phần {nextSectionIndex + 1}
+              <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
+
+          {/* Encouragement */}
+          <p className="text-center text-ge-gray-400 text-sm">
+            💪 Bạn đang làm rất tốt! Cố lên nhé!
+          </p>
+        </motion.div>
+      </div>
+    );
+  }
+
   /* ── Quiz Questions ─────────────────── */
   if (!questions) return null;
   const question = questions[currentQuestion];
   if (!question) return null;
 
-  const progress = ((currentQuestion + 1) / questions.length) * 100;
+
   const selectedAnswer = answers.find((a) => a.questionId === question.id);
   const isMidpoint = currentQuestion === 44;
   const sectionIndex = currentQuestion < 30 ? 0 : currentQuestion < 59 ? 1 : 2;
-  const sectionLabels = ['MBTI-Lite', 'RIASEC', 'Năng lực'];
+  const sectionStart = sectionIndex === 0 ? 0 : sectionIndex === 1 ? 30 : 59;
+  const sectionEnd = sectionIndex === 0 ? 30 : sectionIndex === 1 ? 59 : 88;
+  const sectionProgress = ((currentQuestion - sectionStart + 1) / (sectionEnd - sectionStart)) * 100;
+  const sectionLabels = ['Phần 1: MBTI-Lite', 'Phần 2: RIASEC', 'Phần 3: Năng lực'];
 
   const handleAnswer = (optionId: string) => {
     if (!question) return;
@@ -417,7 +520,7 @@ export default function QuizPage() {
           <div className="text-center">
             <span className="text-xs text-ge-gray-400 font-medium">{sectionLabels[sectionIndex]}</span>
             <span className="block text-sm text-ge-gray-600 font-semibold">
-              {currentQuestion + 1} / {questions.length}
+              {currentQuestion - sectionStart + 1} / {sectionEnd - sectionStart}
             </span>
           </div>
           <button
@@ -427,11 +530,22 @@ export default function QuizPage() {
             ✕
           </button>
         </div>
-        {/* Progress bar */}
+        {/* Section dots */}
+        <div className="flex items-center justify-center gap-2 py-1">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className={`h-1.5 rounded-full transition-all ${
+                i === sectionIndex ? 'w-8 bg-ge-blue' : i < sectionIndex ? 'w-4 bg-ge-green' : 'w-4 bg-ge-gray-200'
+              }`}
+            />
+          ))}
+        </div>
+        {/* Progress bar within section */}
         <div className="h-1.5 bg-ge-gray-100">
           <motion.div
             className="h-full bg-gradient-to-r from-ge-blue to-ge-green rounded-r-full"
-            animate={{ width: `${progress}%` }}
+            animate={{ width: `${sectionProgress}%` }}
             transition={{ type: 'spring', stiffness: 100, damping: 20 }}
           />
         </div>

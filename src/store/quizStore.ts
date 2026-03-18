@@ -4,6 +4,9 @@ import { QuizAnswer, QuizResult, LeadFormData } from '@/types/quiz';
 import { generateResult } from '@/lib/scoring';
 import { questions } from '@/data/questions';
 
+// Section break boundaries: after Q30 (index 29) and Q59 (index 58)
+const SECTION_BREAKS = [29, 58];
+
 interface QuizState {
   // State
   currentQuestion: number;
@@ -12,12 +15,14 @@ interface QuizState {
   result: QuizResult | null;
   leadData: LeadFormData | null;
   showLeadForm: boolean;
+  sectionBreak: boolean;
   quizStartedAt: number | null;
 
   // Actions
   startQuiz: () => void;
   answerQuestion: (questionId: number, optionId: string) => void;
   goBack: () => void;
+  continueSectionBreak: () => void;
   submitLeadForm: (data: LeadFormData) => void;
   calculateResult: () => void;
   reset: () => void;
@@ -32,6 +37,7 @@ export const useQuizStore = create<QuizState>()(
       result: null,
       leadData: null,
       showLeadForm: false,
+      sectionBreak: false,
       quizStartedAt: null,
 
       startQuiz: () =>
@@ -42,6 +48,7 @@ export const useQuizStore = create<QuizState>()(
           result: null,
           leadData: null,
           showLeadForm: false,
+          sectionBreak: false,
           quizStartedAt: Date.now(),
         }),
 
@@ -50,20 +57,36 @@ export const useQuizStore = create<QuizState>()(
         const newAnswers = answers.filter((a) => a.questionId !== questionId);
         newAnswers.push({ questionId, optionId });
 
-        if (currentQuestion < questions.length - 1) {
-          set({
-            answers: newAnswers,
-            currentQuestion: currentQuestion + 1,
-            direction: 1,
-          });
-        } else {
+        if (currentQuestion >= questions.length - 1) {
           // Last question answered — show lead form
           set({
             answers: newAnswers,
             showLeadForm: true,
             direction: 1,
           });
+        } else if (SECTION_BREAKS.includes(currentQuestion)) {
+          // End of section — show section break screen
+          set({
+            answers: newAnswers,
+            sectionBreak: true,
+            direction: 1,
+          });
+        } else {
+          set({
+            answers: newAnswers,
+            currentQuestion: currentQuestion + 1,
+            direction: 1,
+          });
         }
+      },
+
+      continueSectionBreak: () => {
+        const { currentQuestion } = get();
+        set({
+          sectionBreak: false,
+          currentQuestion: currentQuestion + 1,
+          direction: 1,
+        });
       },
 
       goBack: () => {
@@ -95,6 +118,7 @@ export const useQuizStore = create<QuizState>()(
           result: null,
           leadData: null,
           showLeadForm: false,
+          sectionBreak: false,
           quizStartedAt: null,
         }),
     }),
