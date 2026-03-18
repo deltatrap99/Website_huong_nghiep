@@ -23,8 +23,6 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useAuthStore } from '@/store/authStore';
-import { exportResultsToCSV, downloadCSV } from '@/lib/googleSheet';
-import { getAllQuizResults, QuizResultRow } from '@/lib/database';
 
 export default function AuthPage() {
   const router = useRouter();
@@ -164,16 +162,15 @@ export default function AuthPage() {
     );
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess('');
 
     if (mode === 'login') {
-      const ok = login(email, password);
+      const ok = await login(email, password);
       if (ok) {
         setSuccess('Đăng nhập thành công!');
-        setTimeout(() => router.push('/account'), 500);
       } else {
         setError('Email hoặc mật khẩu không đúng');
       }
@@ -186,12 +183,11 @@ export default function AuthPage() {
         setError('Mật khẩu phải có ít nhất 6 ký tự');
         return;
       }
-      const ok = register(name, email, password);
-      if (ok) {
+      const result = await register(name, email, password);
+      if (result.ok) {
         setSuccess('Đăng ký thành công!');
-        setTimeout(() => router.push('/account'), 500);
       } else {
-        setError('Email đã được sử dụng');
+        setError(result.error || 'Đăng ký thất bại');
       }
     }
   };
@@ -389,33 +385,63 @@ export default function AuthPage() {
 
 // Admin Dashboard Component
 function AdminDashboard() {
-  const { logout } = useAuthStore();
-  const [dbResults, setDbResults] = useState<QuizResultRow[]>([]);
+  const { logout, getAuthHeaders } = useAuthStore();
+  const [stats, setStats] = useState<{
+    totalQuizzes: number;
+    weeklyQuizzes: number;
+    totalLeads: number;
+    archetypeDistribution: Record<string, number>;
+    leadsByTier: Record<string, number>;
+    modeBreakdown: Record<string, number>;
+  } | null>(null);
+  const [results, setResults] = useState<Array<Record<string, unknown>>>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const data = await getAllQuizResults();
-      setDbResults(data);
+      const headers = getAuthHeaders();
+
+      try {
+        const [statsRes, resultsRes] = await Promise.all([
+          fetch('/api/admin/stats', { headers }),
+          fetch('/api/admin/results?limit=50', { headers }),
+        ]);
+
+        if (statsRes.ok) setStats(await statsRes.json());
+        if (resultsRes.ok) {
+          const data = await resultsRes.json();
+          setResults(data.results || []);
+        }
+      } catch (err) {
+        console.error('[Admin] Fetch error:', err);
+      }
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [getAuthHeaders]);
 
-  const totalResults = dbResults.length;
+  const totalResults = stats?.totalQuizzes || 0;
+  const archetypeCount = stats?.archetypeDistribution || {};
+  const recentCount = stats?.weeklyQuizzes || 0;
 
-  // Count archetypes
-  const archetypeCount: Record<string, number> = {};
-  dbResults.forEach((r) => {
-    archetypeCount[r.archetype_name_vi] = (archetypeCount[r.archetype_name_vi] || 0) + 1;
-  });
-
-  // Recent (last 7 days)
-  const week = Date.now() - 7 * 24 * 60 * 60 * 1000;
-  const recentCount = dbResults.filter(
-    (r) => r.created_at && new Date(r.created_at).getTime() > week
-  ).length;
+  const handleExportCSV = async () => {
+    const headers = getAuthHeaders();
+    try {
+      const res = await fetch('/api/admin/export', { headers });
+      if (res.ok) {
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `quiz-results-${new Date().toISOString().slice(0, 10)}.csv`;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+    } catch (err) {
+      console.error('[Admin] Export error:', err);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-ge-gray-50 pt-24 pb-16">
@@ -439,28 +465,7 @@ function AdminDashboard() {
             </div>
             <div className="flex gap-3">
               <button
-                onClick={() => {
-                  const csvHeaders = ['Thời gian', 'MBTI', 'RIASEC Primary', 'RIASEC Secondary', 'Archetype (VI)', 'Archetype (EN)', 'R', 'I', 'A', 'S', 'E', 'C', 'English', 'Self Study', 'Soft Skill', 'Lead Score', 'Ngành nghề'];
-                  const csvRows = dbResults.map((r) => [
-                    r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : '',
-                    r.mbti_lite, r.riasec_primary, r.riasec_secondary,
-                    r.archetype_name_vi, r.archetype_name_en,
-                    r.r_score, r.i_score, r.a_score, r.s_score, r.e_score, r.c_score,
-                    r.english_score, r.self_study_score, r.soft_skill_score,
-                    r.lead_score, r.careers
-                  ].map((cell) => {
-                    const str = String(cell);
-                    return str.includes(',') || str.includes('"') ? `"${str.replace(/"/g, '""')}"` : str;
-                  }).join(','));
-                  const csv = '\uFEFF' + [csvHeaders.join(','), ...csvRows].join('\n');
-                  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-                  const url = URL.createObjectURL(blob);
-                  const link = document.createElement('a');
-                  link.href = url;
-                  link.download = `quiz-results-${new Date().toISOString().slice(0, 10)}.csv`;
-                  link.click();
-                  URL.revokeObjectURL(url);
-                }}
+                onClick={handleExportCSV}
                 className="px-5 py-2.5 rounded-full bg-ge-yellow text-ge-navy font-semibold hover:bg-ge-yellow/80 transition-all text-sm flex items-center gap-2"
               >
                 <FileText size={16} />
@@ -544,7 +549,7 @@ function AdminDashboard() {
               <div className="animate-spin w-8 h-8 border-3 border-ge-blue border-t-transparent rounded-full mx-auto mb-3" />
               <p className="text-ge-gray-500 text-sm">Đang tải dữ liệu từ Supabase...</p>
             </div>
-          ) : dbResults.length === 0 ? (
+          ) : results.length === 0 ? (
             <p className="text-ge-gray-500 text-sm py-4 text-center">Chưa có kết quả nào.</p>
           ) : (
             <div className="overflow-x-auto">
@@ -559,32 +564,32 @@ function AdminDashboard() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-ge-gray-100">
-                  {dbResults.map((r) => (
-                    <tr key={r.id} className="hover:bg-ge-gray-50 transition-colors">
+                  {results.map((r: Record<string, unknown>) => (
+                    <tr key={String(r.id)} className="hover:bg-ge-gray-50 transition-colors">
                       <td className="px-3 py-3 text-ge-gray-600 whitespace-nowrap">
-                        {r.created_at ? new Date(r.created_at).toLocaleString('vi-VN', {
+                        {r.created_at ? new Date(String(r.created_at)).toLocaleString('vi-VN', {
                           day: '2-digit', month: '2-digit', year: '2-digit',
                           hour: '2-digit', minute: '2-digit'
                         }) : '—'}
                       </td>
                       <td className="px-3 py-3">
                         <span className="bg-ge-blue/10 text-ge-blue px-2 py-0.5 rounded-full text-xs font-bold">
-                          {r.mbti_lite}
+                          {String(r.mbti_lite || '')}
                         </span>
                       </td>
                       <td className="px-3 py-3">
                         <span className="bg-ge-orange/10 text-ge-orange px-2 py-0.5 rounded-full text-xs font-bold">
-                          {r.riasec_primary}{r.riasec_secondary}
+                          {String(r.riasec_primary || '')}{String(r.riasec_secondary || '')}
                         </span>
                       </td>
-                      <td className="px-3 py-3 font-medium text-ge-gray-900">{r.archetype_name_vi}</td>
+                      <td className="px-3 py-3 font-medium text-ge-gray-900">{String(r.archetype_code || '')}</td>
                       <td className="px-3 py-3 text-center">
                         <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
-                          r.lead_score >= 8 ? 'bg-green-100 text-green-700' :
-                          r.lead_score >= 5 ? 'bg-yellow-100 text-yellow-700' :
+                          r.lead_tier === 'hot' ? 'bg-green-100 text-green-700' :
+                          r.lead_tier === 'warm' ? 'bg-yellow-100 text-yellow-700' :
                           'bg-ge-gray-100 text-ge-gray-500'
                         }`}>
-                          {r.lead_score}
+                          {String(r.lead_tier || 'cold')}
                         </span>
                       </td>
                     </tr>
